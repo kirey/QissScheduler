@@ -1,0 +1,37 @@
+<div id="login">
+    <div class="container">
+        <!-- Card -->
+        <div class="card">
+            <!-- Card Header -->
+            <div class="card-header">
+                <h2>Login</h2>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+                    <!-- Username Input -->
+                    <div class="form-group">                                
+                        <label for="username">Username</label>
+                        <div class="input-group">
+                            <input formControlName="username" type="text" id="username" class="form-control" placeholder="Enter Username" aria-label="Username">
+                        </div>
+                        <div *ngIf="username.touched && username.errors" class="text-danger">
+                            Username is required.
+                        </div>
+                    </div>
+                    <!-- Password Input -->
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-group">
+                            <input formControlName="password" type="text" id="password" class="form-control" placeholder="Enter Password" aria-label="Password">
+                        </div>
+                        <div *ngIf="password.touched && password.errors" class="text-danger">
+                            Password is required.
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" [disabled]="username.errors ||  password.errors">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
