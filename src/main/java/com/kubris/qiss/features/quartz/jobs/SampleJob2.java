@@ -8,15 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SampleJob implements Job {
+public class SampleJob2 implements Job {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-
     public void execute(JobExecutionContext context) throws JobExecutionException {
-
         logger.info("Job ** {} ** fired @ {}", context.getJobDetail().getKey().getName(), context.getFireTime());
-        logger.info("-----------------------------------------------------------------------------------------------------");
+    	logger.info("=============================================================================================");
         logger.info("Next job scheduled @ {}", context.getNextFireTime());
     }
 }
