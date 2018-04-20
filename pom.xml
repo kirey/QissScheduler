@@ -19,6 +19,7 @@
         <security.version>5.0.0.RELEASE</security.version>
         <hibernate.version>5.2.13.Final</hibernate.version>
         <spring.integration.version>5.0.4.RELEASE</spring.integration.version>
+        <quartz.version>2.2.3</quartz.version>
 	</properties>
 
 	<dependencies>
@@ -83,7 +84,14 @@
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
+		
+		<!-- quartz -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartz.version}</version>
+        </dependency>
+        
 		<!--Spring BATCH -->
 		<dependency>
 			<groupId>org.springframework.batch</groupId>
