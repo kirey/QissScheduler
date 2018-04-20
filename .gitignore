@@ -7,3 +7,4 @@ src/main/webapp/.vscode/
 .sass-cache
 *npm-debug.log*
 src/main/webapp/*.log
+src/main/webapp/DocumentManagement/node_modules/
