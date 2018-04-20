@@ -1,4 +1,4 @@
-package com.kubris.documentManagement.rest.controller;
+package com.kubris.qiss.rest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kubris.documentManagement.rest.security.UserAccount;
+import com.kubris.qiss.rest.security.UserAccount;
 
 /**
  * @author paunovicm

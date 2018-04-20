@@ -34,7 +34,7 @@
 		</property>
 		<property name="packagesToScan">
 			<list>
-				<value>com.kubris.documentManagement.data.entity</value>
+				<value>com.kubris.qiss.data.entity</value>
 			</list>
 		</property>
 	</bean>

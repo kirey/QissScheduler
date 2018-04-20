@@ -1,4 +1,4 @@
-package com.kubris.documentManagement.rest.security;
+package com.kubris.qiss.rest.security;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package com.kubris.documentManagement.data.entity;
+package com.kubris.qiss.data.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;

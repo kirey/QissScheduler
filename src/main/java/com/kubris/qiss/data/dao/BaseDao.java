@@ -1,4 +1,4 @@
-package com.kubris.documentManagement.data.dao;
+package com.kubris.qiss.data.dao;
 
 import java.util.List;
 

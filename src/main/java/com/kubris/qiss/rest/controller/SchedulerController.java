@@ -1,4 +1,4 @@
-package com.kubris.documentManagement.rest.controller;
+package com.kubris.qiss.rest.controller;
 
 //  /scheduler
 public class SchedulerController {

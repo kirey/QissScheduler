@@ -1,4 +1,4 @@
-package com.kubris.documentManagement.rest.controller;
+package com.kubris.qiss.rest.controller;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kubris.documentManagement.data.dao.ArtigianiDao;
-import com.kubris.documentManagement.data.entity.Artigiani;
+import com.kubris.qiss.data.dao.ArtigianiDao;
+import com.kubris.qiss.data.entity.Artigiani;
 
 @RestController
 @RequestMapping("/rest")

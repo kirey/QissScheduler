@@ -9,9 +9,9 @@
     
     
 	<context:annotation-config/>
-	<context:component-scan base-package="com.kubris.documentManagement.data.dao" />
-	<context:component-scan base-package="com.kubris.documentManagement.data.entity" />
-	<context:component-scan base-package="com.kubris.documentManagement" />
+	<context:component-scan base-package="com.kubris.qiss.data.dao" />
+	<context:component-scan base-package="com.kubris.qiss.data.entity" />
+	<context:component-scan base-package="com.kubris.qiss" />
 	
 
 

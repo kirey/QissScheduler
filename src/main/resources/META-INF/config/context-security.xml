@@ -53,8 +53,8 @@
 		</security:http>
 	
   	 <!-- Security Beans -->
-	<bean id="unauthorizedEntryPoint" class="com.kubris.documentManagement.rest.security.UnauthorizedEntryPoint" />
-	<bean id="accessDeniedHandler"  class="com.kubris.documentManagement.rest.security.AccessDeniedExceptionHandler"/>
+	<bean id="unauthorizedEntryPoint" class="com.kubris.qiss.rest.security.UnauthorizedEntryPoint" />
+	<bean id="accessDeniedHandler"  class="com.kubris.qiss.rest.security.AccessDeniedExceptionHandler"/>
 	<bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 		<constructor-arg name="strength" value="11" />
   	</bean>

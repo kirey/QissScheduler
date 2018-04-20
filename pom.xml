@@ -3,16 +3,16 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.kubris</groupId>
-	<artifactId>documentManagement</artifactId>
+	<artifactId>qiss</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>DocumentManagement</name>
+	<name>QISS</name>
 	<!-- <url>http://maven.apache.org</url> -->
 
 	<properties>
 
-		<project.name>DocumentManagement</project.name>
+		<project.name>QISS</project.name>
 		<spring.version>5.0.5.RELEASE</spring.version>
         <spring.batch.version>4.0.1.RELEASE</spring.batch.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

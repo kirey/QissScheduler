@@ -1,4 +1,4 @@
-package com.kubris.documentManagement.data.dao;
+package com.kubris.qiss.data.dao;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kubris.documentManagement.data.entity.Artigiani;
+import com.kubris.qiss.data.entity.Artigiani;
 
 
 /**
