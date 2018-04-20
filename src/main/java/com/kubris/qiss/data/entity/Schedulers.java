@@ -1,4 +1,5 @@
 package com.kubris.qiss.data.entity;
+
 import java.util.List;
 
 import java.io.Serializable;
@@ -29,6 +30,8 @@ public class Schedulers implements Serializable {
 	private String jobName;
 
 	private String cronExpression;
+
+	private String status;
 
 	List<SchedulerExecutionLog> schedulerExecutionLogs = new ArrayList<>();
 
@@ -71,6 +74,15 @@ public class Schedulers implements Serializable {
 
 	public void setSchedulerExecutionLogs(List<SchedulerExecutionLog> schedulerExecutionLogs) {
 		this.schedulerExecutionLogs = schedulerExecutionLogs;
+	}
+
+	@Column(name = "status")
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }
