@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Dao object for any model class. It is used for inheritance of necessary DAO methods
- * @author paunovicm
+ * 
  * 
  */
 @Transactional
