@@ -49,7 +49,9 @@ public class SampleJob1 implements InterruptableJob {
         
         schedulerExecutionLogDao.attachDirty(jobLog);
         
-        
+
+        context.getJobDetail().getJobDataMap().put("jobId", jobLog.getId());
+
         
     }
 

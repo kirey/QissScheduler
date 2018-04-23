@@ -30,6 +30,7 @@ import com.kubris.qiss.data.dao.SchedulersDao;
 import com.kubris.qiss.data.entity.SchedulerExecutionLog;
 import com.kubris.qiss.data.entity.Schedulers;
 import com.kubris.qiss.features.quartz.jobs.SampleJob1;
+import com.kubris.qiss.features.quartz.jobs.SchedJobListener;
 import com.kubris.qiss.utils.AppConstants;
 
 @RestController
@@ -44,6 +45,9 @@ public class SchedulerController {
 	
 	@Autowired
 	private Scheduler scheduler1;
+	
+	@Autowired
+	private SchedJobListener schedJobListener;
 	
 	
 	/*@Autowired 
@@ -108,7 +112,10 @@ public class SchedulerController {
 		CronTrigger cronTrigger = newTrigger().withIdentity("TRIGGER", "group1").withSchedule(cronSchedule(schedulerEnt.getCronExpression())).build();
 		
 		JobDetail jobDetail1 = newJob().ofType(SampleJob1.class).storeDurably().withIdentity(JobKey.jobKey(schedulerEnt.getJobName())).withDescription("Invoke Sample Job service...").build();
-		
+
+				
+		scheduler1.getListenerManager().addJobListener(schedJobListener);
+
 		scheduler1.scheduleJob(jobDetail1, cronTrigger);
 		scheduler1.start();
 		
