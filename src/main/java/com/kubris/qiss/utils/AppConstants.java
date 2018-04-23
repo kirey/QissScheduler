@@ -11,5 +11,6 @@ public class AppConstants {
 	public static final String JOB_STATUS_FINISHED_SUCCESSFULL = "SUCCESSFULL";
 	public static final String JOB_STATUS_FINISHED_FAILEDL = "FAILED";
 	public static final String JOB_STATUS_STARTED = "STARTED";
+	public static final String JOB_STATUS_INTERRUPT = "CANCELED";
 	
 }

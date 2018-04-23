@@ -35,6 +35,20 @@ public class SchedulerExecutionLogDao extends BaseDao{
 		return lista;	
 	}
 	
+	@Transactional
+	public SchedulerExecutionLog getLatestLogByJob(String jobName){
+	    
+		String hql = "from SchedulerExecutionLog s " + 
+				" where s.startTimestamp in ( " + 
+				"    select max(b.startTimestamp) " + 
+				"    from SchedulerExecutionLog b " + 
+				"    where b.jobName= :jobName" + 
+				")";
+		
+		return (SchedulerExecutionLog) sessionFactory.getCurrentSession().createQuery(hql).setParameter("jobName", jobName).uniqueResult();
+
+	}
+	
 
 	
 

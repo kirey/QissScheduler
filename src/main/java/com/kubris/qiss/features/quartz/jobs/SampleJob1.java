@@ -2,9 +2,11 @@ package com.kubris.qiss.features.quartz.jobs;
 
 import java.util.Date;
 
+import org.quartz.InterruptableJob;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.UnableToInterruptJobException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,7 @@ import com.kubris.qiss.data.entity.Schedulers;
 import com.kubris.qiss.utils.AppConstants;
 
 @Component
-public class SampleJob1 implements Job {
+public class SampleJob1 implements InterruptableJob {
 
     Logger logger = LoggerFactory.getLogger(getClass());
     
@@ -47,5 +49,13 @@ public class SampleJob1 implements Job {
         
         schedulerExecutionLogDao.attachDirty(jobLog);
         
+        
+        
     }
+
+	@Override
+	public void interrupt() throws UnableToInterruptJobException {
+		System.out.println("Prekinut");
+		
+	}
 }

@@ -5,6 +5,7 @@ import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.quartz.CronTrigger;
@@ -108,7 +109,6 @@ public class SchedulerController {
 		
 		JobDetail jobDetail1 = newJob().ofType(SampleJob1.class).storeDurably().withIdentity(JobKey.jobKey(schedulerEnt.getJobName())).withDescription("Invoke Sample Job service...").build();
 		
-		
 		scheduler1.scheduleJob(jobDetail1, cronTrigger);
 		scheduler1.start();
 		
@@ -118,5 +118,27 @@ public class SchedulerController {
 		
 		return new ResponseEntity("Job started", HttpStatus.OK); 
 	}
+	
+	@RequestMapping(value = "/stopJob/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> stopJob(@PathVariable int id) throws SchedulerException {
+		
+		Schedulers schedulerEnt = schedulersDao.findById(id);
+		scheduler1.interrupt(JobKey.jobKey(schedulerEnt.getJobName()));
+		
+		schedulerEnt.setStatus(AppConstants.SCHEDULER_STATUS_FINISHED);
+		schedulersDao.attachDirty(schedulerEnt);
+		SchedulerExecutionLog schedulerLogForUpdate = schedulerExecutionLogDao.getLatestLogByJob(schedulerEnt.getJobName());
+		schedulerLogForUpdate.setStatus(AppConstants.JOB_STATUS_INTERRUPT);
+		schedulerLogForUpdate.setEndTimestamp(new Date());
+		scheduler1.shutdown();
+		
+		return new ResponseEntity("Job stopped", HttpStatus.OK); 
+	}
+	
+	
+	
+	
+	
+	
 
 }
