@@ -38,7 +38,7 @@ public class Schedulers implements Serializable {
 
 	private String status;
 
-	@JsonIgnore
+	@JsonBackReference
 	List<SchedulerExecutionLog> schedulerExecutionLogs = new ArrayList<>();
 
 	@Id
