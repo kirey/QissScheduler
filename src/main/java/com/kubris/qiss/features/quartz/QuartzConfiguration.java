@@ -20,6 +20,7 @@ import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 
 import com.kubris.qiss.features.quartz.jobs.SampleJob1;
 import com.kubris.qiss.features.quartz.jobs.SampleJob2;
+import com.kubris.qiss.features.quartz.jobs.SchedJobListener;
 
 @Configuration
 public class QuartzConfiguration {
@@ -44,6 +45,9 @@ public class QuartzConfiguration {
         StdSchedulerFactory factory = new StdSchedulerFactory();
         Scheduler scheduler = factory.getScheduler();
         
+        //SchedJobListener schedJobListener = new SchedJobListener();
+        
+        //scheduler.getListenerManager().addJobListener(schedJobListener, GroupMatcher<JobKey>.AnyGroup());
         scheduler.setJobFactory(springBeanJobFactory());
        
         return scheduler;

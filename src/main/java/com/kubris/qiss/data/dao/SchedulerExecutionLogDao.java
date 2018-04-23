@@ -3,6 +3,10 @@ package com.kubris.qiss.data.dao;
 
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
@@ -35,7 +39,23 @@ public class SchedulerExecutionLogDao extends BaseDao{
 		return lista;	
 	}
 	
-
+	@Transactional
+	public SchedulerExecutionLog getLogByName(String nameJob)
+	{
+		/*String hql = "from SchedulerExecutionLog sel where sel.jobName = :nameJob";
+		
+	    return  (SchedulerExecutionLog) sessionFactory.getCurrentSession().createQuery(hql).setParameter("jobName", nameJob).uniqueResult();
+		*/
+		
+		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+        CriteriaQuery<SchedulerExecutionLog> query = builder.createQuery(SchedulerExecutionLog.class);
+        
+        Root<SchedulerExecutionLog> root = query.from(SchedulerExecutionLog.class);
+        query.select(root).where(builder.equal(root.get("jobName"), nameJob));
+        SchedulerExecutionLog log = sessionFactory.getCurrentSession().createQuery(query).getSingleResult();
+       		
+		return log;
+	}
 	
 
 }

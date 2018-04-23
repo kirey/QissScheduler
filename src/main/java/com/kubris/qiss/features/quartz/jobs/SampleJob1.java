@@ -47,5 +47,7 @@ public class SampleJob1 implements Job {
         
         schedulerExecutionLogDao.attachDirty(jobLog);
         
+        context.getJobDetail().getJobDataMap().put("jobId", jobLog.getId());
+        
     }
 }

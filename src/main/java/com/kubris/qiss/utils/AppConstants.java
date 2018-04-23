@@ -9,7 +9,7 @@ public class AppConstants {
 	
 	//JOB LOG STATUS
 	public static final String JOB_STATUS_FINISHED_SUCCESSFULL = "SUCCESSFULL";
-	public static final String JOB_STATUS_FINISHED_FAILEDL = "FAILED";
+	public static final String JOB_STATUS_FINISHED_FAILED = "FAILED";
 	public static final String JOB_STATUS_STARTED = "STARTED";
 	
 }
