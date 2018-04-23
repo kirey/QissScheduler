@@ -9,10 +9,14 @@ import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.spi.JobFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 
 import com.kubris.qiss.features.quartz.jobs.SampleJob1;
 import com.kubris.qiss.features.quartz.jobs.SampleJob2;
@@ -21,16 +25,31 @@ import com.kubris.qiss.features.quartz.jobs.SampleJob2;
 public class QuartzConfiguration {
 
     Logger logger = LoggerFactory.getLogger(getClass());
+    
+    @Autowired
+    private ApplicationContext applicationContext;
 
+    @Bean
+    public SpringBeanJobFactory springBeanJobFactory() {
+    	AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
+        logger.debug("Configuring Job factory");
+
+        jobFactory.setApplicationContext(applicationContext);
+        return jobFactory;
+    }
+    
     @Bean
     public Scheduler scheduler() throws SchedulerException, IOException {
 
         StdSchedulerFactory factory = new StdSchedulerFactory();
         Scheduler scheduler = factory.getScheduler();
+        
+        scheduler.setJobFactory(springBeanJobFactory());
        
         return scheduler;
     }
 
+    
     
     @Bean(name="jobDetail1")
     public JobDetail jobDetail1() {
