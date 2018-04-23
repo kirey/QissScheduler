@@ -33,7 +33,7 @@ public class SchedulerExecutionLog implements Serializable {
 
 	private String status;
 
-	@JsonManagedReference
+	
 	private Schedulers scheduler;
 
 	@Id
