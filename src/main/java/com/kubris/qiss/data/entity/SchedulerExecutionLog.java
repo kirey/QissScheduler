@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "scheduler_execution_log")
 public class SchedulerExecutionLog implements Serializable {
@@ -29,6 +31,7 @@ public class SchedulerExecutionLog implements Serializable {
 
 	private String status;
 
+	@JsonManagedReference
 	private Schedulers scheduler;
 
 	@Id

@@ -19,6 +19,8 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "schedulers")
 public class Schedulers implements Serializable {
@@ -33,6 +35,7 @@ public class Schedulers implements Serializable {
 
 	private String status;
 
+	@JsonBackReference
 	List<SchedulerExecutionLog> schedulerExecutionLogs = new ArrayList<>();
 
 	@Id
