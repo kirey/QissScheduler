@@ -1,9 +1,9 @@
 package com.kubris.qiss.features.quartz;
 
 import static org.quartz.JobBuilder.newJob;
-
 import java.io.IOException;
 
+import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
@@ -21,6 +21,8 @@ import com.kubris.qiss.features.quartz.jobs.SampleJob2;
 public class QuartzConfiguration {
 
     Logger logger = LoggerFactory.getLogger(getClass());
+    
+    
 
     @Bean
     public Scheduler scheduler() throws SchedulerException, IOException {
@@ -43,6 +45,14 @@ public class QuartzConfiguration {
     public JobDetail jobDetail2() {
 
         return newJob().ofType(SampleJob2.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_Job_Detail2")).withDescription("Invoke Sample Job service...").build();
+    }
+    
+    
+    
+    @Bean(name="sampleJob1")
+    public Job sampleJob1() {
+
+        return ((Job) new SampleJob1());
     }
 
 }
