@@ -38,7 +38,7 @@ public class ActivateScheduler {
 
 	
 	
-	@PostConstruct
+	//@PostConstruct
 	public void startMe(){
 		logger.info("------------------------------------------------- Activate scheduler");
 		
