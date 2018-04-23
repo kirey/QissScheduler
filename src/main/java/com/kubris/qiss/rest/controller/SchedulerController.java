@@ -68,4 +68,14 @@ public class SchedulerController {
 	  return listSchedulerLogs;
 	 }
 	
+	
+	@RequestMapping(value = "/jobHistory/{idJob}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public List<SchedulerExecutionLog> getHistoryByJobId(@PathVariable int idJob) {
+	  List<SchedulerExecutionLog> listHistoryByJobId = schedulerExecutionLogDao.getLogsByJobId(idJob);
+	  
+	  return listHistoryByJobId;
+	 }
+	
+	
+	
 }
