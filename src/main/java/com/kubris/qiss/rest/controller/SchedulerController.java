@@ -38,8 +38,12 @@ public class SchedulerController {
 	
 	@RequestMapping(value = "/jobs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Schedulers> getAllSchedulers() {
-		List<Schedulers> listSchedulers = schedulersDao.findAll();
-		return listSchedulers;
+		return schedulersDao.findAll();
+	}
+	
+	@RequestMapping(value = "/job/{jobId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Schedulers getJobById(@PathVariable int jobId) {
+		return schedulersDao.findById(jobId);
 	}
 
 	@RequestMapping(value = "/addJob", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,16 +60,14 @@ public class SchedulerController {
 	
 	@RequestMapping(value = "/deleteJob/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String deleteScheduler(@PathVariable int id) {
-		Schedulers scheduler = schedulersDao.findById(id);
-		schedulersDao.delete(scheduler);
+		schedulersDao.delete(schedulersDao.findById(id));
 		return "ok";
 	}
 	
 	//SchedulerLog by log id
 	@RequestMapping(value = "/jobLog/{idLog}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	 public SchedulerExecutionLog getJobLog(@PathVariable int idLog) {
-	  SchedulerExecutionLog listSchedulerLogs = schedulerExecutionLogDao.findById(idLog);
-	  return listSchedulerLogs;
+		return schedulerExecutionLogDao.findById(idLog);
 	 }
 	
 	
