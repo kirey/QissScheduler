@@ -5,6 +5,7 @@ import java.util.List;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,12 +21,14 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "schedulers")
 public class Schedulers implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	
+	private static final long serialVersionUID = 1703338942103035773L;
 
 	private int id;
 
@@ -35,7 +38,7 @@ public class Schedulers implements Serializable {
 
 	private String status;
 
-	@JsonBackReference
+	@JsonIgnore
 	List<SchedulerExecutionLog> schedulerExecutionLogs = new ArrayList<>();
 
 	@Id
@@ -68,7 +71,7 @@ public class Schedulers implements Serializable {
 		this.cronExpression = cronExpression;
 	}
 
-	@OneToMany(mappedBy = "scheduler")
+	@OneToMany(mappedBy = "scheduler",cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@Fetch(FetchMode.SUBSELECT)
 	public List<SchedulerExecutionLog> getSchedulerExecutionLogs() {

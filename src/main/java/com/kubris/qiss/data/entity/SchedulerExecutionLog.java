@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +20,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "scheduler_execution_log")
 public class SchedulerExecutionLog implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	
+	private static final long serialVersionUID = -7923575265748819365L;
 
 	private int id;
 
@@ -31,7 +33,7 @@ public class SchedulerExecutionLog implements Serializable {
 
 	private String status;
 
-	@JsonManagedReference
+	
 	private Schedulers scheduler;
 
 	@Id
@@ -82,7 +84,7 @@ public class SchedulerExecutionLog implements Serializable {
 		this.status = status;
 	}
 
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name = "scheduler")
 	public Schedulers getScheduler() {
 		return scheduler;

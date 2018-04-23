@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kubris.qiss.data.dao.SchedulerExecutionLogDao;
 import com.kubris.qiss.data.dao.SchedulersDao;
 import com.kubris.qiss.data.entity.SchedulerExecutionLog;
 import com.kubris.qiss.data.entity.Schedulers;
@@ -30,6 +31,10 @@ public class SchedulerController {
 
 	@Autowired
 	private SchedulersDao schedulersDao;
+	
+	@Autowired
+	private SchedulerExecutionLogDao schedulerExecutionLogDao;
+
 	
 	@RequestMapping(value = "/jobs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Schedulers> getAllSchedulers() {
@@ -55,5 +60,12 @@ public class SchedulerController {
 		schedulersDao.delete(scheduler);
 		return "ok";
 	}
+	
+	//SchedulerLog by log id
+	@RequestMapping(value = "/jobLog/{idLog}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	 public SchedulerExecutionLog getJobLog(@PathVariable int idLog) {
+	  SchedulerExecutionLog listSchedulerLogs = schedulerExecutionLogDao.findById(idLog);
+	  return listSchedulerLogs;
+	 }
 	
 }
