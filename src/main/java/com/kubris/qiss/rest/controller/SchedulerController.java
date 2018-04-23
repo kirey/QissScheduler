@@ -1,9 +1,17 @@
 package com.kubris.qiss.rest.controller;
 
+import static org.quartz.CronScheduleBuilder.cronSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.quartz.CronTrigger;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,12 +25,12 @@ import com.kubris.qiss.data.entity.SchedulerExecutionLog;
 import com.kubris.qiss.data.entity.Schedulers;
 
 @RestController
-@RequestMapping(value = "/scheduler")
+@RequestMapping(value = "rest/scheduler")
 public class SchedulerController {
 
 	@Autowired
 	private SchedulersDao schedulersDao;
-
+	
 	@RequestMapping(value = "/jobs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Schedulers> getAllSchedulers() {
 		List<Schedulers> listSchedulers = schedulersDao.findAll();
