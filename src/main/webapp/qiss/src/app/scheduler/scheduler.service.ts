@@ -13,4 +13,13 @@ export class SchedulerService {
     getJobs(): Observable<any> {
         return this._http.get(this.baseUrl + 'jobs');
     }
+
+    startJob(id): Observable<any> {
+        return this._http.post(this.baseUrl + 'startJob/' + id, null)
+    }
+
+    stopJob(id): Observable<any> {
+        return this._http.post(this.baseUrl + 'stopJob/' + id, null)
+    }
+
 }

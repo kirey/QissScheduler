@@ -14,11 +14,29 @@ export class SchedulerComponent implements OnInit {
 
     jobs: any;
 
+    start(id) {
+        this.schedulerService.startJob(id)
+            .subscribe(
+                res => console.log(res),
+                err => console.log(err)
+            )
+    }
+    stop(id) {
+        this.schedulerService.stopJob(id)
+            .subscribe(
+                res => console.log(res),
+                err => console.log(err)
+            )
+    }
+
     ngOnInit() {
         // Get All Jobs
         this.schedulerService.getJobs()
             .subscribe(
-                res => this.jobs = res,
+                res => {
+                    this.jobs = res;
+                    // console.log(res);
+                },
                 err => console.log(err)
             );
     }
