@@ -17,12 +17,12 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "EngineServicesService", targetNamespace = "http://engine.webservices.qengine/", wsdlLocation = "file:/C:/MyDocuments/EclipseNeon/QissScheduler/src/main/java/com/kubris/qiss/soap/fielqengine.wsdl")
+@WebServiceClient(name = "EngineServicesService", targetNamespace = "http://engine.webservices.qengine/", wsdlLocation = "file:/C:/fielqengine.wsdl")
 public class EngineServicesService
     extends Service
 {
 
-    private final static URL ENGINESERVICESSERVICE_WSDL_LOCATION;
+    public final static URL ENGINESERVICESSERVICE_WSDL_LOCATION;
     private final static WebServiceException ENGINESERVICESSERVICE_EXCEPTION;
     private final static QName ENGINESERVICESSERVICE_QNAME = new QName("http://engine.webservices.qengine/", "EngineServicesService");
 
@@ -30,7 +30,7 @@ public class EngineServicesService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("file:/C:/MyDocuments/EclipseNeon/QissScheduler/src/main/java/com/kubris/qiss/soap/fielqengine.wsdl");
+            url = new URL("file:/C:/fielqengine.wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }
