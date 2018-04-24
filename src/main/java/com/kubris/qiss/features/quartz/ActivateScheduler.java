@@ -127,6 +127,8 @@ public class ActivateScheduler {
 	    	scheduler.start();
 	    	scheduler.scheduleJob(job1, trigger1);
 	    	scheduler.scheduleJob(job2, trigger2);
+	    	
+	    	
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
@@ -139,10 +141,23 @@ public class ActivateScheduler {
 		
 		logger.info(".................................................................... Job1 rescheduled");
 		JobDetail jobDetail1 = (JobDetail) applicationContext.getBean("jobDetail1");
-		Trigger 	trigger3 = newTrigger().withIdentity("triggerName2", "group1").withSchedule(simpleSchedule().withIntervalInSeconds(1).repeatForever()).build();
+		Trigger 	trigger3 = newTrigger().withIdentity("triggerName3", "group1").withSchedule(simpleSchedule().withIntervalInSeconds(1).repeatForever()).build();
 		
 		try {
-			scheduler.rescheduleJob(new TriggerKey("triggerName1", "group1"), trigger3);
+			scheduler.rescheduleJob(new TriggerKey("triggerName3", "group1"), trigger3);
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Scheduled(fixedDelay = 60000)
+	public void shutdownScheduler1(){
+		
+		logger.info(".................................................................... Job1 stopped");
+		try {
+			scheduler.shutdown();
+			startMe2();
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
