@@ -12,6 +12,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
 
+// NGX BOOTSTRAP
+import { TooltipModule } from 'ngx-bootstrap';
+import { ModalModule } from 'ngx-bootstrap';
+
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SchedulerComponent } from './scheduler/scheduler.component';
@@ -33,7 +37,9 @@ import { SchedulerService } from './scheduler/scheduler.service';
         ReactiveFormsModule,
         FormsModule,
         ButtonModule,
-        TableModule
+        TableModule,
+        TooltipModule.forRoot(),
+        ModalModule.forRoot()
     ],
     providers: [
         HttpClientModule,

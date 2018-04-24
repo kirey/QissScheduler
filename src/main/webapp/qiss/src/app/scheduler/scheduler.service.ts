@@ -15,11 +15,15 @@ export class SchedulerService {
     }
 
     startJob(id): Observable<any> {
-        return this._http.post(this.baseUrl + 'startJob/' + id, null)
+        return this._http.post(this.baseUrl + 'startJob/' + id, null);
     }
 
     stopJob(id): Observable<any> {
-        return this._http.post(this.baseUrl + 'stopJob/' + id, null)
+        return this._http.post(this.baseUrl + 'stopJob/' + id, null);
+    }
+
+    getHisory(id): Observable<any> {
+        return this._http.get(this.baseUrl + 'jobHistory/' + id);
     }
 
 }

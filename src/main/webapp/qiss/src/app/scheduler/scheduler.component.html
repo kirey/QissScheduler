@@ -29,11 +29,24 @@
                             <i class="fa fa-edit  pull-right"></i>
                         </td>
                         <td class="history">
-                            <i class="fa fa-history"></i>
+                            <i class="fa fa-history" tooltip='Check Job History' (click)="openHistoryModal(history, job.id)"></i>
                         </td>
                     </tr>
                 </ng-template>
             </p-table>
         </div>
+
+        <!-- HISTORY Modal -->
+        <ng-template #history>
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Job History</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                This is a modal.
+            </div>
+        </ng-template>
     </div>
 </div>
