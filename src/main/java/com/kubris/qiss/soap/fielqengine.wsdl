@@ -1,0 +1,350 @@
+<definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy" xmlns:tns="http://engine.webservices.qengine/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns="http://schemas.xmlsoap.org/wsdl/" name="EngineServicesService" targetNamespace="http://engine.webservices.qengine/">
+  <types>
+    <xs:schema targetNamespace="http://engine.webservices.qengine/" version="1.0">
+      <xs:element name="cancelExec" type="tns:cancelExec"/>
+      <xs:element name="cancelExecResponse" type="tns:cancelExecResponse"/>
+      <xs:element name="checkExecStatus" type="tns:checkExecStatus"/>
+      <xs:element name="checkExecStatusResponse" type="tns:checkExecStatusResponse"/>
+      <xs:element name="getExecResult" type="tns:getExecResult"/>
+      <xs:element name="getExecResultResponse" type="tns:getExecResultResponse"/>
+      <xs:element name="reqExecControlli" type="tns:reqExecControlli"/>
+      <xs:element name="reqExecControlliResponse" type="tns:reqExecControlliResponse"/>
+      <xs:element name="reqExecTestControlli" type="tns:reqExecTestControlli"/>
+      <xs:element name="reqExecTestControlliResponse" type="tns:reqExecTestControlliResponse"/>
+      <xs:element name="reqExecTestControllo" type="tns:reqExecTestControllo"/>
+      <xs:element name="reqExecTestControlloResponse" type="tns:reqExecTestControlloResponse"/>
+      <xs:element name="reqExecTestQuery" type="tns:reqExecTestQuery"/>
+      <xs:element name="reqExecTestQueryResponse" type="tns:reqExecTestQueryResponse"/>
+      <xs:element name="reqPlanDescriptionForTestQuery" type="tns:reqPlanDescriptionForTestQuery"/>
+      <xs:element name="reqPlanDescriptionForTestQueryResponse" type="tns:reqPlanDescriptionForTestQueryResponse"/>
+      <xs:complexType name="reqExecTestControllo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+          <xs:element minOccurs="0" name="arg1" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="reqExecTestControlloResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:rspReqExecTestControllo"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rspReqExecTestControllo">
+        <xs:complexContent>
+          <xs:extension base="tns:rspSvc">
+            <xs:sequence>
+              <xs:element name="idExec" type="xs:int"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="rspSvc">
+        <xs:sequence>
+          <xs:element name="replyCode" type="xs:int"/>
+          <xs:element minOccurs="0" name="replyDescription" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="reqExecTestControlli">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+          <xs:element minOccurs="0" name="arg1" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="reqExecTestControlliResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:rspReqExecTestControlli"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rspReqExecTestControlli">
+        <xs:complexContent>
+          <xs:extension base="tns:rspSvc">
+            <xs:sequence>
+              <xs:element name="idExec" type="xs:int"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="reqExecControlli">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+          <xs:element minOccurs="0" name="arg1" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="reqExecControlliResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:rspReqExecControlli"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rspReqExecControlli">
+        <xs:complexContent>
+          <xs:extension base="tns:rspSvc">
+            <xs:sequence>
+              <xs:element name="idExec" type="xs:int"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="reqExecTestQuery">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="reqExecTestQueryResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:rspReqExecTestQuery"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rspReqExecTestQuery">
+        <xs:complexContent>
+          <xs:extension base="tns:rspSvc">
+            <xs:sequence>
+              <xs:element name="idExec" type="xs:int"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="checkExecStatus">
+        <xs:sequence>
+          <xs:element name="arg0" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="checkExecStatusResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:rspCheckExecStatus"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rspCheckExecStatus">
+        <xs:complexContent>
+          <xs:extension base="tns:rspSvc">
+            <xs:sequence>
+              <xs:element name="annullamentoRichiesto" type="xs:boolean"/>
+              <xs:element minOccurs="0" name="descStatoLivello1" type="xs:string"/>
+              <xs:element minOccurs="0" name="descStatoLivello2" type="xs:string"/>
+              <xs:element name="statoEsecuzione" type="xs:int"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="cancelExec">
+        <xs:sequence>
+          <xs:element name="arg0" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="cancelExecResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:rspCancelExec"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rspCancelExec">
+        <xs:complexContent>
+          <xs:extension base="tns:rspSvc">
+            <xs:sequence/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="getExecResult">
+        <xs:sequence>
+          <xs:element name="arg0" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getExecResultResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:rspGetExecResult"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rspGetExecResult">
+        <xs:complexContent>
+          <xs:extension base="tns:rspSvc">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="execResult" type="xs:base64Binary"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="reqPlanDescriptionForTestQuery">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="reqPlanDescriptionForTestQueryResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:rspReqPlanDescriptionForTestQuery"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="rspReqPlanDescriptionForTestQuery">
+        <xs:complexContent>
+          <xs:extension base="tns:rspSvc">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="planDebugLog" type="xs:string"/>
+              <xs:element minOccurs="0" name="planDescription" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+    </xs:schema>
+  </types>
+  <message name="EngineServices_checkExecStatus">
+    <part element="tns:checkExecStatus" name="checkExecStatus"/>
+  </message>
+  <message name="EngineServices_checkExecStatusResponse">
+    <part element="tns:checkExecStatusResponse" name="checkExecStatusResponse"/>
+  </message>
+  <message name="EngineServices_reqExecTestQueryResponse">
+    <part element="tns:reqExecTestQueryResponse" name="reqExecTestQueryResponse"/>
+  </message>
+  <message name="EngineServices_reqExecControlliResponse">
+    <part element="tns:reqExecControlliResponse" name="reqExecControlliResponse"/>
+  </message>
+  <message name="EngineServices_cancelExecResponse">
+    <part element="tns:cancelExecResponse" name="cancelExecResponse"/>
+  </message>
+  <message name="EngineServices_reqExecTestControlli">
+    <part element="tns:reqExecTestControlli" name="reqExecTestControlli"/>
+  </message>
+  <message name="EngineServices_reqExecTestControlloResponse">
+    <part element="tns:reqExecTestControlloResponse" name="reqExecTestControlloResponse"/>
+  </message>
+  <message name="EngineServices_reqPlanDescriptionForTestQuery">
+    <part element="tns:reqPlanDescriptionForTestQuery" name="reqPlanDescriptionForTestQuery"/>
+  </message>
+  <message name="EngineServices_reqExecTestControlliResponse">
+    <part element="tns:reqExecTestControlliResponse" name="reqExecTestControlliResponse"/>
+  </message>
+  <message name="EngineServices_cancelExec">
+    <part element="tns:cancelExec" name="cancelExec"/>
+  </message>
+  <message name="EngineServices_reqExecTestControllo">
+    <part element="tns:reqExecTestControllo" name="reqExecTestControllo"/>
+  </message>
+  <message name="EngineServices_reqPlanDescriptionForTestQueryResponse">
+    <part element="tns:reqPlanDescriptionForTestQueryResponse" name="reqPlanDescriptionForTestQueryResponse"/>
+  </message>
+  <message name="EngineServices_getExecResult">
+    <part element="tns:getExecResult" name="getExecResult"/>
+  </message>
+  <message name="EngineServices_getExecResultResponse">
+    <part element="tns:getExecResultResponse" name="getExecResultResponse"/>
+  </message>
+  <message name="EngineServices_reqExecControlli">
+    <part element="tns:reqExecControlli" name="reqExecControlli"/>
+  </message>
+  <message name="EngineServices_reqExecTestQuery">
+    <part element="tns:reqExecTestQuery" name="reqExecTestQuery"/>
+  </message>
+  <portType name="EngineServices">
+    <operation name="cancelExec" parameterOrder="cancelExec">
+      <input message="tns:EngineServices_cancelExec"/>
+      <output message="tns:EngineServices_cancelExecResponse"/>
+    </operation>
+    <operation name="checkExecStatus" parameterOrder="checkExecStatus">
+      <input message="tns:EngineServices_checkExecStatus"/>
+      <output message="tns:EngineServices_checkExecStatusResponse"/>
+    </operation>
+    <operation name="getExecResult" parameterOrder="getExecResult">
+      <input message="tns:EngineServices_getExecResult"/>
+      <output message="tns:EngineServices_getExecResultResponse"/>
+    </operation>
+    <operation name="reqExecControlli" parameterOrder="reqExecControlli">
+      <input message="tns:EngineServices_reqExecControlli"/>
+      <output message="tns:EngineServices_reqExecControlliResponse"/>
+    </operation>
+    <operation name="reqExecTestControlli" parameterOrder="reqExecTestControlli">
+      <input message="tns:EngineServices_reqExecTestControlli"/>
+      <output message="tns:EngineServices_reqExecTestControlliResponse"/>
+    </operation>
+    <operation name="reqExecTestControllo" parameterOrder="reqExecTestControllo">
+      <input message="tns:EngineServices_reqExecTestControllo"/>
+      <output message="tns:EngineServices_reqExecTestControlloResponse"/>
+    </operation>
+    <operation name="reqExecTestQuery" parameterOrder="reqExecTestQuery">
+      <input message="tns:EngineServices_reqExecTestQuery"/>
+      <output message="tns:EngineServices_reqExecTestQueryResponse"/>
+    </operation>
+    <operation name="reqPlanDescriptionForTestQuery" parameterOrder="reqPlanDescriptionForTestQuery">
+      <input message="tns:EngineServices_reqPlanDescriptionForTestQuery"/>
+      <output message="tns:EngineServices_reqPlanDescriptionForTestQueryResponse"/>
+    </operation>
+  </portType>
+  <binding name="EngineServicesBinding" type="tns:EngineServices">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="cancelExec">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="checkExecStatus">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="getExecResult">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="reqExecControlli">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="reqExecTestControlli">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="reqExecTestControllo">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="reqExecTestQuery">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="reqPlanDescriptionForTestQuery">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="EngineServicesService">
+    <port binding="tns:EngineServicesBinding" name="EngineServicesPort">
+      <soap:address location="http://127.0.0.1:8080/QISS/EngineServices"/>
+    </port>
+  </service>
+</definitions>
