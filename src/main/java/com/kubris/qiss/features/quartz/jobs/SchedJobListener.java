@@ -47,11 +47,6 @@ public class SchedJobListener implements JobListener{
 		
 		SchedulerExecutionLog  log = schedulerExecutionLogDao.findById(context.getJobDetail().getJobDataMap().getInt("jobId"));
 		
-		//set scheduler inactive
-		Schedulers scheduler = schedulersDao.findByJobName(context.getJobDetail().getKey().getName());
-		scheduler.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);
-		schedulersDao.attachDirty(scheduler);
-		
 		if(jobException==null)
 		{			
 			log.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);			
