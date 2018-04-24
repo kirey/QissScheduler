@@ -43,11 +43,13 @@ public class SchedJobListener implements JobListener{
 	@Override
 	public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
 		
+		System.out.println("FINISHING Log ID : " + context.getJobDetail().getJobDataMap().getInt("jobId"));
+		
 		SchedulerExecutionLog  log = schedulerExecutionLogDao.findById(context.getJobDetail().getJobDataMap().getInt("jobId"));
 		
 		//set scheduler inactive
 		Schedulers scheduler = schedulersDao.findByJobName(context.getJobDetail().getKey().getName());
-		scheduler.setStatus(AppConstants.SCHEDULER_STATUS_FINISHED);
+		scheduler.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);
 		schedulersDao.attachDirty(scheduler);
 		
 		if(jobException==null)
@@ -60,8 +62,7 @@ public class SchedJobListener implements JobListener{
 		
 		log.setEndTimestamp(new Date());
 		schedulerExecutionLogDao.attachDirty(log);
-		
-		
+				
 	}
 
 }
