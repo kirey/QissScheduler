@@ -1,0 +1,27 @@
+#scheduler {
+    .container {
+        padding-top: 100px;
+    }
+    h1 {
+       color: #323232;
+       margin-bottom: 50px;
+    }
+    th {
+        font-size: 20px;
+        padding: 13px;
+    }
+    .table-row:hover {
+        background-color: #323232;
+    }
+    .fa { margin: 5px 10px; }
+    .fa-edit { margin-top: 8px;}
+    .fa:hover {
+        transition: 1s all;
+        cursor: pointer;
+    }
+    .fa-stop-circle, .fa-play-circle { font-size: 30px; }
+    .fa-trash, .fa-edit { font-size: 25px; }
+    .fa-trash:hover, .fa-stop-circle:hover { color: #E53935; }
+    .fa-edit:hover { color: #FB8C00; }
+    .fa-play-circle:hover { color: #43A047; }
+}

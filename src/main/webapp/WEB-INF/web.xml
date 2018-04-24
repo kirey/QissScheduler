@@ -6,7 +6,7 @@
 	<display-name>QISS</display-name>
 	<welcome-file-list>
 	<!-- Izmeni qiss -->
-        <welcome-file>QISS/dist/index.html</welcome-file>
+        <welcome-file>qiss/dist/index.html</welcome-file>
     </welcome-file-list>
 
 	<context-param>
