@@ -1,5 +1,7 @@
 package com.kubris.qiss.features.quartz.jobs;
 
+import java.util.Date;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobListener;
@@ -56,6 +58,7 @@ public class SchedJobListener implements JobListener{
 			log.setStatus(AppConstants.JOB_STATUS_FINISHED_FAILED);
 		} 
 		
+		log.setEndTimestamp(new Date());
 		schedulerExecutionLogDao.attachDirty(log);
 		
 		
