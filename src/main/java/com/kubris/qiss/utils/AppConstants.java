@@ -3,8 +3,8 @@ package com.kubris.qiss.utils;
 public class AppConstants {
 
 	//SCHEDULER STATUS
-	public static final String SCHEDULER_STATUS_STARTED = "ACTIVE";
-	public static final String SCHEDULER_STATUS_FINISHED = "INACTIVE";
+	public static final String SCHEDULER_STATUS_ACTIVE = "ACTIVE";
+	public static final String SCHEDULER_STATUS_INACTIVE = "INACTIVE";
 	
 	
 	//JOB LOG STATUS

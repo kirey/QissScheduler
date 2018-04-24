@@ -71,7 +71,7 @@ public class Schedulers implements Serializable {
 		this.cronExpression = cronExpression;
 	}
 
-	@OneToMany(mappedBy = "scheduler",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "scheduler")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@Fetch(FetchMode.SUBSELECT)
 	public List<SchedulerExecutionLog> getSchedulerExecutionLogs() {

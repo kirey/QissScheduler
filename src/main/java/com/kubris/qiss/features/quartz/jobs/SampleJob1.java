@@ -30,11 +30,12 @@ public class SampleJob1 implements InterruptableJob {
     private SchedulersDao schedulersDao;
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
+    	
+    	System.out.println("EXECUTING: ontext.getJobDetail().getKey().getName()");
+    	
         logger.info("Job ** {} ** fired @ {}", context.getJobDetail().getKey().getName(), context.getFireTime());
         logger.info("-----------------------------------------------------------------------------------------------------");
         logger.info("Next job scheduled @ {}", context.getNextFireTime());
-        
-        //context.getScheduler().getSchedulerInstanceId();
         
         String jobName = context.getJobDetail().getKey().getName();
         
@@ -47,17 +48,14 @@ public class SampleJob1 implements InterruptableJob {
         jobLog.setJobName(context.getJobDetail().getKey().getName());
         jobLog.setScheduler(scheduler);
         
-        schedulerExecutionLogDao.attachDirty(jobLog);
-        
+        schedulerExecutionLogDao.attachDirty(jobLog);   
 
-        context.getJobDetail().getJobDataMap().put("jobId", jobLog.getId());
-
-        
+        context.getJobDetail().getJobDataMap().put("jobId", jobLog.getId());  
+        System.out.println("Log ID created: " + jobLog.getId());
     }
 
 	@Override
 	public void interrupt() throws UnableToInterruptJobException {
-		System.out.println("Prekinut");
 		
 	}
 }
