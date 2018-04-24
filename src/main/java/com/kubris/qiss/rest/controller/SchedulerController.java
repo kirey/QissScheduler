@@ -161,12 +161,12 @@ public class SchedulerController {
 			scheduler1.start();
 		}		
 		else {
-			scheduler1.resumeTrigger(TriggerKey.triggerKey(schedulerEnt.getJobName(), "group1" ));
+			scheduler1.resumeJob(JobKey.jobKey(schedulerEnt.getJobName()));
 		}
 
 		// update status u scheduler
 		schedulerEnt.setStatus(AppConstants.SCHEDULER_STATUS_ACTIVE);
-		schedulersDao.attachDirty(schedulerEnt);
+		schedulersDao.merge(schedulerEnt);
 		
 		return new ResponseEntity<ResponseDto>( new ResponseDto("Job started"), HttpStatus.OK); 
 
@@ -178,10 +178,10 @@ public class SchedulerController {
 		Schedulers schedulerEnt = schedulersDao.findById(id);
 		
 		scheduler1.pauseJob(JobKey.jobKey(schedulerEnt.getJobName()));
-		
-		scheduler1.pauseTrigger(TriggerKey.triggerKey(schedulerEnt.getJobName(), "group1" ));
-		
+
 		schedulerEnt.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);
+
+
 		schedulersDao.attachDirty(schedulerEnt);
 		
 		SchedulerExecutionLog schedulerLogForUpdate = schedulerExecutionLogDao
@@ -190,7 +190,7 @@ public class SchedulerController {
 		schedulerLogForUpdate.setEndTimestamp(new Date());
 		
 		schedulerExecutionLogDao.attachDirty(schedulerLogForUpdate);
-				
+
 		return new ResponseEntity<ResponseDto>( new ResponseDto("Job stopped"), HttpStatus.OK); 
 	}
 
