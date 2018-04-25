@@ -92,75 +92,75 @@ public class ActivateScheduler {
 //		
 //	}
 	
-	@PostConstruct
-	public void startMe2(){
-		logger.info("------------------------------------------------- Activate scheduler");
-		
-		Job sampleJob1 = (Job)applicationContext.getBean("sampleJob1");
-		
-		
-		jobKey1 = new JobKey("job1", "group1");
-    	job1 = JobBuilder.newJob(sampleJob1.getClass()).withIdentity(jobKey1).build();
-
-    	jobKey2 = new JobKey("job2", "group1");
-    	job2 = JobBuilder.newJob(SampleJob2.class).withIdentity(jobKey2).build();
-
-    	Trigger trigger1 = TriggerBuilder
-		.newTrigger()
-		.withIdentity("triggerName1", "group1")
-		.withSchedule(
-			CronScheduleBuilder.cronSchedule("0/5 * * * * ?"))
-		.build();
-    	
-    	Trigger trigger2 = TriggerBuilder
-		.newTrigger()
-		.withIdentity("triggerName2", "group1")
-		.withSchedule(
-			CronScheduleBuilder.cronSchedule("0/5 * * * * ?"))
-		.build();
-    	
-    	
-    	
-    	
-		try {
-			scheduler = new StdSchedulerFactory().getScheduler();
-	    	scheduler.start();
-	    	scheduler.scheduleJob(job1, trigger1);
-	    	scheduler.scheduleJob(job2, trigger2);
-	    	
-	    	
-		} catch (SchedulerException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	
-	@Scheduled(fixedDelay = 40000)
-	public void changeTriggerJobDetail1(){
-		
-		logger.info(".................................................................... Job1 rescheduled");
-		JobDetail jobDetail1 = (JobDetail) applicationContext.getBean("jobDetail1");
-		Trigger 	trigger3 = newTrigger().withIdentity("triggerName3", "group1").withSchedule(simpleSchedule().withIntervalInSeconds(1).repeatForever()).build();
-		
-		try {
-			scheduler.rescheduleJob(new TriggerKey("triggerName3", "group1"), trigger3);
-		} catch (SchedulerException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
-	@Scheduled(fixedDelay = 60000)
-	public void shutdownScheduler1(){
-		
-		logger.info(".................................................................... Job1 stopped");
-		try {
-			scheduler.shutdown();
-			startMe2();
-		} catch (SchedulerException e) {
-			e.printStackTrace();
-		}
-	}
+//	@PostConstruct
+//	public void startMe2(){
+//		logger.info("------------------------------------------------- Activate scheduler");
+//		
+//		Job sampleJob1 = (Job)applicationContext.getBean("sampleJob1");
+//		
+//		
+//		jobKey1 = new JobKey("job1", "group1");
+//    	job1 = JobBuilder.newJob(sampleJob1.getClass()).withIdentity(jobKey1).build();
+//
+//    	jobKey2 = new JobKey("job2", "group1");
+//    	job2 = JobBuilder.newJob(SampleJob2.class).withIdentity(jobKey2).build();
+//
+//    	Trigger trigger1 = TriggerBuilder
+//		.newTrigger()
+//		.withIdentity("triggerName1", "group1")
+//		.withSchedule(
+//			CronScheduleBuilder.cronSchedule("0/5 * * * * ?"))
+//		.build();
+//    	
+//    	Trigger trigger2 = TriggerBuilder
+//		.newTrigger()
+//		.withIdentity("triggerName2", "group1")
+//		.withSchedule(
+//			CronScheduleBuilder.cronSchedule("0/5 * * * * ?"))
+//		.build();
+//    	
+//    	
+//    	
+//    	
+//		try {
+//			scheduler = new StdSchedulerFactory().getScheduler();
+//	    	scheduler.start();
+//	    	scheduler.scheduleJob(job1, trigger1);
+//	    	scheduler.scheduleJob(job2, trigger2);
+//	    	
+//	    	
+//		} catch (SchedulerException e) {
+//			e.printStackTrace();
+//		}
+//		
+//	}
+//	
+//	
+//	@Scheduled(fixedDelay = 40000)
+//	public void changeTriggerJobDetail1(){
+//		
+//		logger.info(".................................................................... Job1 rescheduled");
+//		JobDetail jobDetail1 = (JobDetail) applicationContext.getBean("jobDetail1");
+//		Trigger 	trigger3 = newTrigger().withIdentity("triggerName3", "group1").withSchedule(simpleSchedule().withIntervalInSeconds(1).repeatForever()).build();
+//		
+//		try {
+//			scheduler.rescheduleJob(new TriggerKey("triggerName3", "group1"), trigger3);
+//		} catch (SchedulerException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	
+//	@Scheduled(fixedDelay = 60000)
+//	public void shutdownScheduler1(){
+//		
+//		logger.info(".................................................................... Job1 stopped");
+//		try {
+//			scheduler.shutdown();
+//			startMe2();
+//		} catch (SchedulerException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 }
