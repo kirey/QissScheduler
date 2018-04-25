@@ -21,12 +21,12 @@
                         <td>{{job.status}}</td>
                         <td>{{job.cronExpression}}</td>
                         <td>
-                            <i class="fa fa-stop-circle pull-right" (click)="stop(job.id)"></i>
-                            <i class="fa fa-play-circle pull-right" (click)="start(job.id)"></i>
+                            <i class="fa fa-stop-circle pull-right" (click)="stop(job.id)" *ngIf="job.status==='ACTIVE'" tooltip='Unschedule Job'></i>
+                            <i class="fa fa-play-circle pull-right" (click)="start(job.id)" *ngIf="job.status==='INACTIVE'" tooltip='Schedule Job'></i>
                         </td>
                         <td>
-                            <i class="fa fa-trash pull-right"></i>
-                            <i class="fa fa-edit  pull-right"></i>
+                            <i class="fa fa-trash pull-right" tooltip='Delete Job'></i>
+                            <i class="fa fa-edit  pull-right" tooltip='Edit Job'></i>
                         </td>
                         <td class="history">
                             <i class="fa fa-history" tooltip='Check Job History' (click)="openHistoryModal(history, job.id)"></i>
@@ -45,7 +45,30 @@
                 </button>
             </div>
             <div class="modal-body">
-                This is a modal.
+                <div *ngIf="jobHistoryArray && jobHistoryArray.length > 0">
+                    <div *ngFor="let history of jobHistoryArray">
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>
+                                    <b>Job Name: </b>{{history.jobName}}
+                                    <br>
+                                    <b>Status: </b>{{history.status}}
+                                    <br>
+                                    <b>Cron Expression: </b>{{history.scheduler.cronExpression}}
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>
+                                    <b>Start Time: </b>{{history.startTimestamp}}
+                                    <br>
+                                    <b>Stop Time: </b>{{history.endTimestamp}}
+                                </p>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
             </div>
         </ng-template>
     </div>

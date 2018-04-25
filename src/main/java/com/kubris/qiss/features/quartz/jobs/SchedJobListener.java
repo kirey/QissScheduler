@@ -29,10 +29,25 @@ public class SchedJobListener implements JobListener{
 	public String getName() {
 		return LISTENER_NAME;
 	}
+	
+	
 
 	@Override
 	public void jobToBeExecuted(JobExecutionContext context) {
-				
+		///add log to db when job is about to execute
+		
+		String jobName = context.getJobDetail().getKey().getName();
+		System.out.println("Ime posla: " + jobName);
+        
+        Schedulers scheduler = schedulersDao.findByJobName(jobName);
+		
+        SchedulerExecutionLog jobLog = new SchedulerExecutionLog();
+        jobLog.setStartTimestamp(new Date());
+        jobLog.setStatus(AppConstants.JOB_STATUS_STARTED);
+        jobLog.setJobName(context.getJobDetail().getKey().getName());
+        jobLog.setScheduler(scheduler);
+        
+        schedulerExecutionLogDao.persist(jobLog);   
 	}
 
 	@Override
@@ -42,26 +57,19 @@ public class SchedJobListener implements JobListener{
 
 	@Override
 	public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
+		//add to log in db after executed successfully
 		
-		System.out.println("FINISHING Log ID : " + context.getJobDetail().getJobDataMap().getInt("jobId"));
-		
-		SchedulerExecutionLog  log = schedulerExecutionLogDao.findById(context.getJobDetail().getJobDataMap().getInt("jobId"));
-		
-		//set scheduler inactive
-		Schedulers scheduler = schedulersDao.findByJobName(context.getJobDetail().getKey().getName());
-		scheduler.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);
-		schedulersDao.attachDirty(scheduler);
-		
-		if(jobException==null)
-		{			
-			log.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);			
+		SchedulerExecutionLog  jobLog = schedulerExecutionLogDao.getLatestLogByJob(context.getJobDetail().getKey().getName());
+		System.out.println("Ülazi u jobWasExecuted");
+		System.out.println("FINISHING Log ID : " + jobLog.getId());
+		if(jobLog.getStatus().equals(AppConstants.JOB_STATUS_FINISHED_FAILED)) {
+			
+		}else {
+			jobLog.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);			
 		}
-		else {
-			log.setStatus(AppConstants.JOB_STATUS_FINISHED_FAILED);
-		} 
+		jobLog.setEndTimestamp(new Date());
 		
-		log.setEndTimestamp(new Date());
-		schedulerExecutionLogDao.attachDirty(log);
+		schedulerExecutionLogDao.merge(jobLog);
 				
 	}
 
