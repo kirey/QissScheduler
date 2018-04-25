@@ -1,0 +1,52 @@
+<div id="scheduler">
+    <div class="container">
+        <h1>Scheduler</h1>
+
+        <!-- Table of JOBS -->
+        <div *ngIf="jobs && jobs.length > 0">
+            <p-table [value]="jobs">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Job Name</th>
+                        <th>Current Status</th>
+                        <th>Cron Expression</th>
+                        <th>Change Status</th>
+                        <th>Actions</th>
+                        <th>History</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-job>
+                    <tr class="table-row">
+                        <td>{{job.jobName}}</td>
+                        <td>{{job.status}}</td>
+                        <td>{{job.cronExpression}}</td>
+                        <td>
+                            <i class="fa fa-stop-circle pull-right" (click)="stop(job.id)"></i>
+                            <i class="fa fa-play-circle pull-right" (click)="start(job.id)"></i>
+                        </td>
+                        <td>
+                            <i class="fa fa-trash pull-right"></i>
+                            <i class="fa fa-edit  pull-right"></i>
+                        </td>
+                        <td class="history">
+                            <i class="fa fa-history" tooltip='Check Job History' (click)="openHistoryModal(history, job.id)"></i>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <!-- HISTORY Modal -->
+        <ng-template #history>
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Job History</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                This is a modal.
+            </div>
+        </ng-template>
+    </div>
+</div>

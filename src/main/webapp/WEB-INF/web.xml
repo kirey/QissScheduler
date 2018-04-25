@@ -5,7 +5,8 @@
 	version="3.1">
 	<display-name>QISS</display-name>
 	<welcome-file-list>
-        <welcome-file>QISS/dist/index.html</welcome-file>
+	<!-- Izmeni qiss -->
+        <welcome-file>qiss/dist/index.html</welcome-file>
     </welcome-file-list>
 
 	<context-param>
