@@ -145,7 +145,7 @@ public class SchedulerController {
 	 */
 	@RequestMapping(value = "/startJob/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDto> startJob(@PathVariable int id) throws SchedulerException {
-
+		
 		Schedulers schedulerEnt = schedulersDao.findById(id);
 		CronTrigger cronTrigger = newTrigger().withIdentity(TriggerKey.triggerKey(schedulerEnt.getJobName(), "group1"))
 				.withSchedule(cronSchedule(schedulerEnt.getCronExpression())).build();
@@ -178,7 +178,8 @@ public class SchedulerController {
 		Schedulers schedulerEnt = schedulersDao.findById(id);
 		
 		scheduler1.pauseJob(JobKey.jobKey(schedulerEnt.getJobName()));
-
+		scheduler1.interrupt(JobKey.jobKey(schedulerEnt.getJobName()));
+		
 		schedulerEnt.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);
 
 

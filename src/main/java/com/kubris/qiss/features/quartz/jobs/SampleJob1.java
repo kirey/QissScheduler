@@ -6,6 +6,10 @@ import org.quartz.InterruptableJob;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.TriggerKey;
 import org.quartz.UnableToInterruptJobException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +33,10 @@ public class SampleJob1 implements InterruptableJob {
 	@Autowired
 	private SchedulersDao schedulersDao;
 
-	public void execute(JobExecutionContext context) {
+	private boolean loopControl = false;
+
+
+	public void execute(JobExecutionContext context) throws JobExecutionException {
 		try {
 			System.out.println("EXECUTING:" + context.getJobDetail().getKey().getName());
 
@@ -38,8 +45,14 @@ public class SampleJob1 implements InterruptableJob {
 					"-----------------------------------------------------------------------------------------------------");
 			logger.info("Next job scheduled @ {}", context.getNextFireTime());
 
-			//calling method for exception
-			//dangerousMethod();
+			SchedulerExecutionLog jobLog = schedulerExecutionLogDao
+					.getLatestLogByJob(context.getJobDetail().getKey().getName());
+			loopControl = true;
+			System.out.println("");
+			for (int i = 0; i < 20 && loopControl; i++) {
+				Thread.currentThread().sleep(1000);
+				System.out.print(".");
+			}
 
 		} catch (Exception e) {
 
@@ -50,17 +63,17 @@ public class SampleJob1 implements InterruptableJob {
 			jobLog.setEndTimestamp(new Date());
 
 			schedulerExecutionLogDao.merge(jobLog);
+		} finally {
+			JobExecutionException jobExecutionException = new JobExecutionException();
+			jobExecutionException.setUnscheduleAllTriggers(true);
+
 		}
 
 	}
 
-	//method to test exception
-//	private void dangerousMethod() throws JobExecutionException {
-//		throw new JobExecutionException();
-//	}
-
 	@Override
 	public void interrupt() throws UnableToInterruptJobException {
-
+		System.out.println("Ulazi u interrupt");
+		loopControl = false;
 	}
 }

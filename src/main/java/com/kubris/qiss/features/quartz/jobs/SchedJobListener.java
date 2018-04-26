@@ -63,7 +63,7 @@ public class SchedJobListener implements JobListener{
 		System.out.println("Ülazi u jobWasExecuted");
 		System.out.println("FINISHING Log ID : " + jobLog.getId());
 		if(jobLog.getStatus().equals(AppConstants.JOB_STATUS_FINISHED_FAILED)) {
-			
+			//ispravi
 		}else {
 			jobLog.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);			
 		}
