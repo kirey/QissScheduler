@@ -5,6 +5,8 @@ import java.util.Date;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,23 +31,12 @@ public class SchedJobListener implements JobListener {
 	public String getName() {
 		return LISTENER_NAME;
 	}
+	
+	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Override
 	public void jobToBeExecuted(JobExecutionContext context) {
-		/// add log to db when job is about to execute
-
-		String jobName = context.getJobDetail().getKey().getName();
-		System.out.println("Ime posla: " + jobName);
-
-		Schedulers scheduler = schedulersDao.findByJobName(jobName);
-
-		SchedulerExecutionLog jobLog = new SchedulerExecutionLog();
-		jobLog.setStartTimestamp(new Date());
-		jobLog.setStatus(AppConstants.JOB_STATUS_STARTED);
-		jobLog.setJobName(context.getJobDetail().getKey().getName());
-		jobLog.setScheduler(scheduler);
-
-		schedulerExecutionLogDao.persist(jobLog);
+		
 	}
 
 	@Override
@@ -55,25 +46,24 @@ public class SchedJobListener implements JobListener {
 
 	@Override
 	public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
-		//add to log in db after executed successfully
-		
-		SchedulerExecutionLog  jobLog = schedulerExecutionLogDao.getLatestLogByJob(context.getJobDetail().getKey().getName());
-		System.out.println("Ülazi u jobWasExecuted");
-		System.out.println("FINISHING Log ID : " + jobLog.getId());
-		if(jobLog.getStatus().equals(AppConstants.JOB_STATUS_FINISHED_FAILED)) {
-			//ispravi
-		}else if(jobLog.getStatus().equals(AppConstants.JOB_STATUS_STARTED)) {
-			jobLog.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);	
-		}else if(jobLog.getStatus().equals(AppConstants.JOB_STATUS_INTERRUPT)) {
-			//ispravi
-		}	else {
+		SchedulerExecutionLog jobLog = schedulerExecutionLogDao
+				.getLatestLogByJob(context.getJobDetail().getKey().getName());
+		logger.info("Ülazi u jobWasExecuted");
+		logger.info("FINISHING Log ID : " + jobLog.getId());
+		if (jobLog.getStatus().equals(AppConstants.JOB_STATUS_FINISHED_FAILED)) {
+			// ispravi
+		} else if (jobLog.getStatus().equals(AppConstants.JOB_STATUS_STARTED)) {
+			jobLog.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);
+		} else if (jobLog.getStatus().equals(AppConstants.JOB_STATUS_INTERRUPT)) {
+			// ispravi
+		} else {
 			System.out.println("Ulazi u job succeess");
-			jobLog.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);			
+			jobLog.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);
 		}
 		jobLog.setEndTimestamp(new Date());
-		
+
 		schedulerExecutionLogDao.merge(jobLog);
-				
+
 	}
 
 }

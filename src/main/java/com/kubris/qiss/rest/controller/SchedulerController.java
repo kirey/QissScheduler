@@ -14,8 +14,11 @@ import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+import org.quartz.Trigger.TriggerState;
 import org.quartz.TriggerKey;
 import org.quartz.impl.matchers.GroupMatcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -52,6 +55,8 @@ public class SchedulerController {
 
 	@Autowired
 	private SchedJobListener schedJobListener;
+	
+	Logger logger = LoggerFactory.getLogger(getClass());
 
 	/*
 	 * @Autowired
@@ -155,9 +160,8 @@ public class SchedulerController {
 				.build();
 
 		scheduler1.getListenerManager().addJobListener(schedJobListener);
-
 		scheduler1.scheduleJob(jobDetail1, cronTrigger);
-		scheduler1.start();
+	    scheduler1.start();
 		
 		// update status u scheduler
 		schedulerEnt.setStatus(AppConstants.SCHEDULER_STATUS_ACTIVE);
@@ -172,7 +176,6 @@ public class SchedulerController {
 		
 		Schedulers schedulerEnt = schedulersDao.findById(id);
 		System.out.println(schedulerEnt.getJobName() + " Ime");
-		//scheduler1.pauseJob(JobKey.jobKey(schedulerEnt.getJobName()));
 		scheduler1.interrupt(JobKey.jobKey(schedulerEnt.getJobName()));
 		
 		schedulerEnt.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);

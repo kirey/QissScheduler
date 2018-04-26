@@ -2,6 +2,7 @@ package com.kubris.qiss.features.quartz.jobs;
 
 import java.util.Date;
 
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.InterruptableJob;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -23,6 +24,7 @@ import com.kubris.qiss.data.entity.Schedulers;
 import com.kubris.qiss.utils.AppConstants;
 
 @Component
+@DisallowConcurrentExecution
 public class SampleJob1 implements InterruptableJob {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
@@ -35,27 +37,36 @@ public class SampleJob1 implements InterruptableJob {
 
 	private boolean loopControl = false;
 
-	private SchedulerExecutionLog jobLog = null;
+	private SchedulerExecutionLog jobLogLatest = null;
+	
+	private JobExecutionContext jobExecutionContext = null;
 
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		try {
-			System.out.println("EXECUTING:" + context.getJobDetail().getKey().getName());
-
-			logger.info("Job ** {} ** fired @ {}", context.getJobDetail().getKey().getName(), context.getFireTime());
-			logger.info(
-					"-----------------------------------------------------------------------------------------------------");
-			logger.info("Next job scheduled @ {}", context.getNextFireTime());
-
-			 jobLog = schedulerExecutionLogDao
-					.getLatestLogByJob(context.getJobDetail().getKey().getName());
+			jobExecutionContext = context;
 			
+			String jobName = context.getJobDetail().getKey().getName();
+			logger.info("Upisivanje posla u bazu sa imenom : " + jobName);
+
+			Schedulers scheduler = schedulersDao.findByJobName(jobName);
+
+			SchedulerExecutionLog jobLog = new SchedulerExecutionLog();
+			jobLog.setStartTimestamp(new Date());
+			jobLog.setStatus(AppConstants.JOB_STATUS_STARTED);
+			jobLog.setJobName(context.getJobDetail().getKey().getName());
+			jobLog.setScheduler(scheduler);
+			schedulerExecutionLogDao.persist(jobLog);
+			
+			jobLogLatest = schedulerExecutionLogDao.getLatestLogByJob(context.getJobDetail().getKey().getName());
+
 			loopControl = true;
 			System.out.println("");
 			for (int i = 0; i < 20 && loopControl; i++) {
 				Thread.currentThread().sleep(1000);
-				System.out.print(".");
+				logger.info(
+						"EXECUTING:" + context.getJobDetail().getKey().getName() + "WITH LOG ID: " + jobLogLatest.getId());
 			}
-			System.out.println("Dolazi ovde");
+			logger.info("Zavrsena petlja");
 
 		} catch (Exception e) {
 
@@ -76,9 +87,16 @@ public class SampleJob1 implements InterruptableJob {
 
 	@Override
 	public void interrupt() throws UnableToInterruptJobException {
-		System.out.println("Ulazi u interrupt" + jobLog.getJobName());
-		jobLog.setStatus(AppConstants.JOB_STATUS_INTERRUPT);
-		jobLog.setEndTimestamp(new Date());
+		logger.info("Ulazi u interrupt " + jobLogLatest.getJobName());
+		jobLogLatest.setStatus(AppConstants.JOB_STATUS_INTERRUPT);
+		jobLogLatest.setEndTimestamp(new Date());
 		loopControl = false;
+		//TriggerKey tkey = new TriggerKey(jobLogLatest.getJobName());
+		/*try {
+			//jobExecutionContext.getScheduler().pauseTrigger(TriggerKey.triggerKey(jobLogLatest.getJobName(), "group1"));
+			jobExecutionContext.getScheduler().deleteJob(JobKey.jobKey(jobLogLatest.getJobName()));
+		} catch (SchedulerException e) {
+			
+		}*/
 	}
 }
