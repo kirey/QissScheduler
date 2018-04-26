@@ -28,6 +28,9 @@ export class SchedulerService {
     editJob(obj) {
         return this._http.put(this.baseUrl + 'editJob', obj);
     }
+    deleteJob(id) {
+        return this._http.delete(this.baseUrl + 'deleteJob/' + id);
+    }
     getHisory(id): Observable<any> {
         return this._http.get(this.baseUrl + 'jobHistory/' + id);
     }

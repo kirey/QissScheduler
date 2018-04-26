@@ -23,10 +23,11 @@ export class SchedulerComponent implements OnInit {
     jobForm: FormGroup;
     jobHistoryArray = [];
     currentStatus: string;
-    currentId: number;
+    currentJob: any;
     @ViewChild('addJobModal') addJobModal: ModalDirective;
     @ViewChild('editJobModal') editJobModal: ModalDirective;
     @ViewChild('historyModal') historyModal: ModalDirective;
+    @ViewChild('deleteModal') deleteModal: ModalDirective;
 
 
     // Add Job Modal
@@ -59,8 +60,7 @@ export class SchedulerComponent implements OnInit {
             jobName: [job.jobName, Validators.required],
             cronExpression: [job.cronExpression, Validators.required]
         });
-        this.currentStatus = job.status;
-        this.currentId = job.id;
+        this.currentJob = job;
     }
 
     // Edit Job
@@ -69,7 +69,7 @@ export class SchedulerComponent implements OnInit {
             jobName: this.jobName.value,
             cronExpression: this.cronExpression.value,
             status: this.currentStatus,
-            id: this.currentId
+            id: this.currentJob.id
         }
         this.schedulerService.editJob(obj)
             .subscribe(
@@ -77,6 +77,21 @@ export class SchedulerComponent implements OnInit {
                 err => console.log(err)
             );
     };
+
+    // Delete Job Modal
+    openDeleteJobModal(job) {
+        this.currentJob = job;
+        this.deleteModal.show();
+    }
+
+    // Delete Job
+    deleteJob() {
+        this.schedulerService.deleteJob(this.currentJob.id)
+            .subscribe(
+                res => console.log(res),
+                err => console.log(err)
+            );
+    }
 
     // Start Job
     start(id) {

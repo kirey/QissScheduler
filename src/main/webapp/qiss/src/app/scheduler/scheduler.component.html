@@ -32,7 +32,7 @@
                             <i class="fa fa-play-circle pull-right" (click)="start(job.id)" *ngIf="job.status==='INACTIVE'" tooltip='Schedule Job'></i>
                         </td>
                         <td>
-                            <i class="fa fa-trash pull-right" tooltip='Delete Job'></i>
+                            <i class="fa fa-trash pull-right" (click)="openDeleteJobModal(job)" tooltip='Delete Job'></i>
                             <i class="fa fa-edit  pull-right" (click)="openEditJobModal(job)" tooltip='Edit Job'></i>
                         </td>
                         <td class="history">
@@ -162,6 +162,28 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-transparent" (click)="historyModal.hide()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DELETE MODAL -->
+        <div class="modal fade" bsModal #deleteModal="bs-modal" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="Delete Job"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title pull-left">Delete Job</h4>
+                        <button type="button" class="close pull-right" aria-label="Close" (click)="deleteModal.hide()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="delete-modal-txt">Are you sure you want to delete job?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" (click)="deleteJob()">Delete</button>
+                        <button type="button" class="btn btn-transparent" (click)="deleteModal.hide()">Cancel</button>
                     </div>
                 </div>
             </div>
