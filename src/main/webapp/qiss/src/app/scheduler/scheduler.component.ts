@@ -1,29 +1,82 @@
-import { Component, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewEncapsulation, ViewChild } from '@angular/core';
 
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { SchedulerService } from './scheduler.service';
 import { Button } from 'primeng/button';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
+    moduleId: module.id,
     selector: 'app-scheduler',
     templateUrl: './scheduler.component.html',
     styleUrls: ['./scheduler.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    providers: [BsModalService]
 })
 export class SchedulerComponent implements OnInit {
 
-    constructor(public schedulerService: SchedulerService, private _modalService: BsModalService) { }
+    constructor(public schedulerService: SchedulerService, private _modalService: BsModalService, public formBuilder: FormBuilder) { }
 
     jobs: any;
-    modalRef: BsModalRef;
-    config = {
-        animated: true,
-        keyboard: true,
-        class: 'history-modal'
-    };
+    jobForm: FormGroup;
     jobHistoryArray = [];
+    currentStatus: string;
+    currentId: number;
+    @ViewChild('addJobModal') addJobModal: ModalDirective;
+    @ViewChild('editJobModal') editJobModal: ModalDirective;
+    @ViewChild('historyModal') historyModal: ModalDirective;
+
+
+    // Add Job Modal
+    openAddJobModal() {
+        this.addJobModal.show();
+        this.jobForm = this.formBuilder.group({
+            jobName: ['', Validators.required],
+            cronExpression: ['', Validators.required]
+        });
+    }
+
+    // Add Job
+    addJob() {
+        let obj = {
+            jobName: this.jobName.value,
+            cronExpression: this.cronExpression.value,
+            status: null
+        }
+        this.schedulerService.addJob(obj)
+            .subscribe(
+                res => console.log(res),
+                err => console.log(err)
+            );
+    };
+
+    // Edit Job Modal
+    openEditJobModal(job) {
+        this.editJobModal.show();
+        this.jobForm = this.formBuilder.group({
+            jobName: [job.jobName, Validators.required],
+            cronExpression: [job.cronExpression, Validators.required]
+        });
+        this.currentStatus = job.status;
+        this.currentId = job.id;
+    }
+
+    // Edit Job
+    editJob() {
+        let obj = {
+            jobName: this.jobName.value,
+            cronExpression: this.cronExpression.value,
+            status: this.currentStatus,
+            id: this.currentId
+        }
+        this.schedulerService.editJob(obj)
+            .subscribe(
+                res => console.log(res),
+                err => console.log(err)
+            );
+    };
 
     // Start Job
     start(id) {
@@ -44,9 +97,8 @@ export class SchedulerComponent implements OnInit {
     }
 
     //History Modal
-    openHistoryModal(history: TemplateRef<any>, id) {
-        this.modalRef = this._modalService.show(history, this.config);
-
+    openHistoryModal(id) {
+        this.historyModal.show();
         this.schedulerService.getHisory(id)
             .subscribe(
                 res => {
@@ -68,5 +120,7 @@ export class SchedulerComponent implements OnInit {
                 err => console.log(err)
             );
     }
-
+    //Getters for Form Contorls
+    get jobName() { return this.jobForm.get('jobName'); }
+    get cronExpression() { return this.jobForm.get('cronExpression'); }
 }

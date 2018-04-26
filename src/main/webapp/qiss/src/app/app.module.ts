@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // PrimeNG
 import { ButtonModule } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
 
 // NGX BOOTSTRAP
 import { TooltipModule } from 'ngx-bootstrap';
@@ -38,6 +39,7 @@ import { SchedulerService } from './scheduler/scheduler.service';
         FormsModule,
         ButtonModule,
         TableModule,
+        DialogModule,
         TooltipModule.forRoot(),
         ModalModule.forRoot()
     ],

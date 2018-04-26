@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { HttpClient } from '@angular/common/http';
 
+import { DialogModule } from 'primeng/dialog';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { SchedulerComponent } from './scheduler.component';
@@ -14,7 +17,8 @@ import { SchedulerService } from './scheduler.service';
     ],
     imports: [
         CommonModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        DialogModule
     ],
     providers: [
         HttpClient,
