@@ -156,14 +156,9 @@ public class SchedulerController {
 
 		scheduler1.getListenerManager().addJobListener(schedJobListener);
 
-		if (!scheduler1.checkExists(jobDetail1.getKey())) {
-			scheduler1.scheduleJob(jobDetail1, cronTrigger);
-			scheduler1.start();
-		}		
-		else {
-			scheduler1.resumeJob(JobKey.jobKey(schedulerEnt.getJobName()));
-		}
-
+		scheduler1.scheduleJob(jobDetail1, cronTrigger);
+		scheduler1.start();
+		
 		// update status u scheduler
 		schedulerEnt.setStatus(AppConstants.SCHEDULER_STATUS_ACTIVE);
 		schedulersDao.merge(schedulerEnt);
@@ -176,8 +171,8 @@ public class SchedulerController {
 	public ResponseEntity<ResponseDto> stopJob(@PathVariable int id) throws SchedulerException {
 		
 		Schedulers schedulerEnt = schedulersDao.findById(id);
-		
-		scheduler1.pauseJob(JobKey.jobKey(schedulerEnt.getJobName()));
+		System.out.println(schedulerEnt.getJobName() + " Ime");
+		//scheduler1.pauseJob(JobKey.jobKey(schedulerEnt.getJobName()));
 		scheduler1.interrupt(JobKey.jobKey(schedulerEnt.getJobName()));
 		
 		schedulerEnt.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);

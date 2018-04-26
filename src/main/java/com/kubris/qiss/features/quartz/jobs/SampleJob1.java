@@ -35,6 +35,7 @@ public class SampleJob1 implements InterruptableJob {
 
 	private boolean loopControl = false;
 
+	private SchedulerExecutionLog jobLog = null;
 
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		try {
@@ -45,14 +46,16 @@ public class SampleJob1 implements InterruptableJob {
 					"-----------------------------------------------------------------------------------------------------");
 			logger.info("Next job scheduled @ {}", context.getNextFireTime());
 
-			SchedulerExecutionLog jobLog = schedulerExecutionLogDao
+			 jobLog = schedulerExecutionLogDao
 					.getLatestLogByJob(context.getJobDetail().getKey().getName());
+			
 			loopControl = true;
 			System.out.println("");
 			for (int i = 0; i < 20 && loopControl; i++) {
 				Thread.currentThread().sleep(1000);
 				System.out.print(".");
 			}
+			System.out.println("Dolazi ovde");
 
 		} catch (Exception e) {
 
@@ -73,7 +76,9 @@ public class SampleJob1 implements InterruptableJob {
 
 	@Override
 	public void interrupt() throws UnableToInterruptJobException {
-		System.out.println("Ulazi u interrupt");
+		System.out.println("Ulazi u interrupt" + jobLog.getJobName());
+		jobLog.setStatus(AppConstants.JOB_STATUS_INTERRUPT);
+		jobLog.setEndTimestamp(new Date());
 		loopControl = false;
 	}
 }
