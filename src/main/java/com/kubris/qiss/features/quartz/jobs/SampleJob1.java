@@ -105,7 +105,7 @@ public class SampleJob1 implements InterruptableJob {
 	public void interrupt() throws UnableToInterruptJobException {
 		logger.info("Ulazi u interrupt " + jobLogLatest.getJobName());
 		//jobLogLatest.setStatus(AppConstants.JOB_STATUS_INTERRUPT);
-		jobLogLatest.setEndTimestamp(new Date());
+		//jobLogLatest.setEndTimestamp(new Date());
 		loopControl = false;
 		//TriggerKey tkey = new TriggerKey(jobLogLatest.getJobName());
 		/*try {
