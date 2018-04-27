@@ -12,7 +12,7 @@ public interface JobService {
 	public void startJob(Integer id) throws SchedulerException;
 	public void stopJob(Integer id) throws SchedulerException;
 	public void deleteJob(String jobName);
-	public void pauseJob(String jobName);
+	public void pauseJob(Integer id) throws SchedulerException;
 	public void resumeJob(String jobName);
 	public String getJobState(String jobName, String groupName) throws SchedulerException;
 	public boolean isJobWithNamePresent(String jobName, String groupName) throws SchedulerException;

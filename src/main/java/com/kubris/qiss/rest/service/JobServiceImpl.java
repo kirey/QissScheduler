@@ -72,7 +72,7 @@ public class JobServiceImpl implements JobService{
 		JobDetail jobDetail = createJob(schedulerEnt.getJobName(), AppConstants.GROUP_NAME);		
 				
 		scheduler1.getListenerManager().addJobListener(schedJobListener);
-		//if(!scheduler1.checkExists(jobDetail.getKey()))
+		if(!scheduler1.checkExists(jobDetail.getKey()))
 			scheduler1.scheduleJob(jobDetail, cronTrigger);
 		
 	    scheduler1.start();
@@ -111,8 +111,7 @@ public class JobServiceImpl implements JobService{
 
 
 	@Override
-	public void pauseJob(String jobName) {
-		// TODO Auto-generated method stub
+	public void pauseJob(Integer id) {
 		
 	}
 
