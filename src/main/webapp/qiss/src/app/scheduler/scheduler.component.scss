@@ -58,13 +58,16 @@
         text-align: center;
     }
     .fa { margin: 5px 10px; }
+    .fa-stop-circle { color: #B71C1C; }
+    .fa-stop-circle:hover { color: #C62828 };
+    .fa-play-circle { color: #1B5E20; }
+    .fa-play-circle:hover { color: #2E7D32; }
     .fa-edit, .fa-start-circle { margin-top: 8px;}
     .fa:hover { cursor: pointer; }
     .fa-stop-circle, .fa-play-circle { font-size: 30px; }
     .fa-trash, .fa-edit, .fa-history { font-size: 25px; }
-    .fa-trash:hover, .fa-stop-circle:hover { color: #B71C1C; }
+    .fa-trash:hover { color: #B71C1C; }
     .fa-edit:hover, .fa-history:hover { color: #F57F17; }
-    .fa-play-circle:hover { color: #1B5E20; }
 
     // Add Job Modal
     .add-job-modal {

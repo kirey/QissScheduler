@@ -30,6 +30,10 @@ export class SchedulerComponent implements OnInit {
     @ViewChild('deleteModal') deleteModal: ModalDirective;
 
 
+    reload() {
+        location.reload();
+    }
+
     // Add Job Modal
     openAddJobModal() {
         this.addJobModal.show();
@@ -48,7 +52,11 @@ export class SchedulerComponent implements OnInit {
         }
         this.schedulerService.addJob(obj)
             .subscribe(
-                res => console.log(res),
+                res => {
+                    console.log(res);
+                    this.addJobModal.hide();
+                    this.reload();
+                },
                 err => console.log(err)
             );
     };
@@ -61,6 +69,7 @@ export class SchedulerComponent implements OnInit {
             cronExpression: [job.cronExpression, Validators.required]
         });
         this.currentJob = job;
+        this.currentStatus = job.status;
     }
 
     // Edit Job
@@ -73,7 +82,11 @@ export class SchedulerComponent implements OnInit {
         }
         this.schedulerService.editJob(obj)
             .subscribe(
-                res => console.log(res),
+                res => {
+                    console.log(res);
+                    this.editJobModal.hide();
+                    this.reload();
+                },
                 err => console.log(err)
             );
     };
@@ -88,7 +101,11 @@ export class SchedulerComponent implements OnInit {
     deleteJob() {
         this.schedulerService.deleteJob(this.currentJob.id)
             .subscribe(
-                res => console.log(res),
+                res => {
+                    console.log(res);
+                    this.deleteModal.hide();
+                    this.reload();
+                },
                 err => console.log(err)
             );
     }
@@ -97,7 +114,10 @@ export class SchedulerComponent implements OnInit {
     start(id) {
         this.schedulerService.startJob(id)
             .subscribe(
-                res => console.log(res),
+                res => {
+                    console.log(res);
+                    this.reload();
+                },
                 err => console.log(err)
             )
     }
@@ -106,7 +126,10 @@ export class SchedulerComponent implements OnInit {
     stop(id) {
         this.schedulerService.stopJob(id)
             .subscribe(
-                res => console.log(res),
+                res => {
+                    console.log(res);
+                    this.reload();
+                },
                 err => console.log(err)
             )
     }
