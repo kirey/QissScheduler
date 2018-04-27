@@ -72,7 +72,7 @@ public class JobServiceImpl implements JobService{
 		JobDetail jobDetail = createJob(schedulerEnt.getJobName(), AppConstants.GROUP_NAME);		
 				
 		scheduler1.getListenerManager().addJobListener(schedJobListener);
-		if(!scheduler1.checkExists(jobDetail.getKey()))
+		//if(!scheduler1.checkExists(jobDetail.getKey()))
 			scheduler1.scheduleJob(jobDetail, cronTrigger);
 		
 	    scheduler1.start();
@@ -87,18 +87,18 @@ public class JobServiceImpl implements JobService{
 		
 		Schedulers schedulerEnt = schedulersDao.findById(id);
 		
-		scheduler1.interrupt(JobKey.jobKey(schedulerEnt.getJobName()));
-		scheduler1.deleteJob(JobKey.jobKey(schedulerEnt.getJobName()));
+		scheduler1.interrupt(JobKey.jobKey(schedulerEnt.getJobName(), AppConstants.GROUP_NAME));
+		scheduler1.deleteJob(JobKey.jobKey(schedulerEnt.getJobName(), AppConstants.GROUP_NAME));
 		
 		schedulerEnt.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);
 		schedulersDao.attachDirty(schedulerEnt);
 		
-		SchedulerExecutionLog schedulerLogForUpdate = schedulerExecutionLogDao
+		/*SchedulerExecutionLog schedulerLogForUpdate = schedulerExecutionLogDao
 				.getLatestLogByJob(schedulerEnt.getJobName());
 		schedulerLogForUpdate.setStatus(AppConstants.JOB_STATUS_INTERRUPT);
 		schedulerLogForUpdate.setEndTimestamp(new Date());
 		
-		schedulerExecutionLogDao.attachDirty(schedulerLogForUpdate);
+		schedulerExecutionLogDao.attachDirty(schedulerLogForUpdate); */
 		
 	}
 
