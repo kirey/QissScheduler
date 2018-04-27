@@ -4,6 +4,7 @@ import static org.quartz.JobBuilder.newJob;
 
 import java.io.IOException;
 
+import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
@@ -52,8 +53,6 @@ public class QuartzConfiguration {
        
         return scheduler;
     }
-
-    
     
     @Bean(name="jobDetail1")
     public JobDetail jobDetail1() {
@@ -66,6 +65,12 @@ public class QuartzConfiguration {
     public JobDetail jobDetail2() {
 
         return newJob().ofType(SampleJob2.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_Job_Detail2")).withDescription("Invoke Sample Job service...").build();
+    }
+    
+    @Bean(name="sampleJob1")
+    public Job sampleJob1() {
+
+        return ((Job) new SampleJob1());
     }
 
 }

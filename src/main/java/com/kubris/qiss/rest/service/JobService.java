@@ -8,8 +8,8 @@ import org.quartz.UnableToInterruptJobException;
 public interface JobService {
 
 	public CronTrigger createTrigger(String cronExpresion, String jobName, String groupName);
-	public JobDetail createJob(String jobName, String groupName);
-	public void startJob(Integer id) throws SchedulerException;
+	public JobDetail createJob(String jobName, String groupName) throws ClassNotFoundException;
+	public void startJob(Integer id) throws SchedulerException, ClassNotFoundException;
 	public void stopJob(Integer id) throws SchedulerException;
 	public void deleteJob(String jobName);
 	public void pauseJob(Integer id) throws SchedulerException;

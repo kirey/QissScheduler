@@ -138,13 +138,13 @@ public class SchedulerController {
 		try {
 			jobService.startJob(id);
 			return new ResponseEntity<ResponseDto>( new ResponseDto("Job started"), HttpStatus.OK); 
-		} catch (SchedulerException e) {
-			return new ResponseEntity<ResponseDto>( new ResponseDto("Job starting failed"), HttpStatus.INTERNAL_SERVER_ERROR); 
+		} catch (SchedulerException | ClassNotFoundException e) {
+			return new ResponseEntity<ResponseDto>( new ResponseDto("Job starting failed " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR); 
 		}
 	}
 
 	/**
-	 * MEthod for stopping job with given id
+	 * Method for stopping job with given id
 	 * @param id
 	 * @return
 	 */
@@ -155,9 +155,21 @@ public class SchedulerController {
 			jobService.stopJob(id);
 			return new ResponseEntity<ResponseDto>( new ResponseDto("Job stopped sucesffully"), HttpStatus.OK); 
 		} catch ( SchedulerException e) {
-			return new ResponseEntity<ResponseDto>( new ResponseDto("Job starting failed: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR); 
+			return new ResponseEntity<ResponseDto>( new ResponseDto("Failed to stop job: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR); 
 		}
 		
 	}
-
+	
+	//not implemented yet
+	@RequestMapping(value = "/pauseJob/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseDto> pauseJob(@PathVariable int id) {
+		
+		try {
+			jobService.pauseJob(id);
+			return new ResponseEntity<ResponseDto>( new ResponseDto("Job paused"), HttpStatus.OK); 
+		} catch (SchedulerException e) {
+			return new ResponseEntity<ResponseDto>( new ResponseDto("Failed to pause job"), HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
+	}
+	
 }

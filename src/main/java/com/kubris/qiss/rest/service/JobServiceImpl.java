@@ -9,6 +9,8 @@ import java.util.List;
 import static org.quartz.JobBuilder.newJob;
 
 import org.quartz.CronTrigger;
+import org.quartz.InterruptableJob;
+import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
@@ -19,6 +21,7 @@ import org.quartz.TriggerKey;
 import org.quartz.UnableToInterruptJobException;
 import org.quartz.Trigger.TriggerState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.kubris.qiss.data.dao.SchedulerExecutionLogDao;
@@ -44,6 +47,9 @@ public class JobServiceImpl implements JobService{
 	@Autowired
 	private SchedulerExecutionLogDao schedulerExecutionLogDao;
 	
+	@Autowired
+	private ApplicationContext applicationContext;
+	
 	@Override
 	public CronTrigger createTrigger(String cronExpresion, String jobName, String groupName) {
 				
@@ -53,18 +59,21 @@ public class JobServiceImpl implements JobService{
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public JobDetail createJob(String jobName, String groupName) {
+	public JobDetail createJob(String jobName, String groupName) throws ClassNotFoundException {
 		
-		JobDetail jobDetail = newJob().ofType(SampleJob1.class).storeDurably()
+		Job jobClass = (Job) applicationContext.getBean("sampleJob1");
+		
+		JobDetail jobDetail = newJob().ofType(jobClass.getClass()).storeDurably()
 				.withIdentity(JobKey.jobKey(jobName,AppConstants.GROUP_NAME)).withDescription("Invoke Sample Job service...")
 				.build();
-		
+				
 		return jobDetail;
 	}
 
 	@Override
-	public void startJob(Integer id) throws SchedulerException {
+	public void startJob(Integer id) throws SchedulerException, ClassNotFoundException {
 		
 		Schedulers schedulerEnt = schedulersDao.findById(id);
 		
