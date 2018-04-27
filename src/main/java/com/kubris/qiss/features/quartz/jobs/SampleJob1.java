@@ -61,26 +61,42 @@ public class SampleJob1 implements InterruptableJob {
 
 			loopControl = true;
 			System.out.println("");
-			for (int i = 0; i < 20 && loopControl; i++) {
+			for (int i = 0; i < 10 && loopControl; i++) {
 				Thread.currentThread().sleep(1000);
 				logger.info(
 						"EXECUTING:" + context.getJobDetail().getKey().getName() + "WITH LOG ID: " + jobLogLatest.getId());
 			}
 			logger.info("Zavrsena petlja");
+			
+			//uncomment this to cause exeption
+			//int p = 8/0;
+			
+			if(loopControl) {
+				//jobLogLatest.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);
+				context.getJobDetail().getJobDataMap().put("status", AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);
+			}
+			else context.getJobDetail().getJobDataMap().put("status", AppConstants.JOB_STATUS_INTERRUPT);
+						
+			schedulerExecutionLogDao.merge(jobLogLatest);
 
 		} catch (Exception e) {
 
-			SchedulerExecutionLog jobLog = schedulerExecutionLogDao
-					.getLatestLogByJob(context.getJobDetail().getKey().getName());
+			/*SchedulerExecutionLog jobLog = schedulerExecutionLogDao
+					.getLatestLogByJob(context.getJobDetail().getKey().getName());*/
 
-			jobLog.setStatus(AppConstants.JOB_STATUS_FINISHED_FAILED);
-			jobLog.setEndTimestamp(new Date());
+			//jobLogLatest.setStatus(AppConstants.JOB_STATUS_FINISHED_FAILED);
+			context.getJobDetail().getJobDataMap().put("status", AppConstants.JOB_STATUS_FINISHED_FAILED);
+			//schedulerExecutionLogDao.merge(jobLogLatest);
+			
+			
+			
+			//jobLog.setEndTimestamp(new Date()); // mm comm
 
-			schedulerExecutionLogDao.merge(jobLog);
+			schedulerExecutionLogDao.merge(jobLogLatest);
 		} finally {
 			JobExecutionException jobExecutionException = new JobExecutionException();
 			jobExecutionException.setUnscheduleAllTriggers(true);
-
+			
 		}
 
 	}
@@ -88,7 +104,7 @@ public class SampleJob1 implements InterruptableJob {
 	@Override
 	public void interrupt() throws UnableToInterruptJobException {
 		logger.info("Ulazi u interrupt " + jobLogLatest.getJobName());
-		jobLogLatest.setStatus(AppConstants.JOB_STATUS_INTERRUPT);
+		//jobLogLatest.setStatus(AppConstants.JOB_STATUS_INTERRUPT);
 		jobLogLatest.setEndTimestamp(new Date());
 		loopControl = false;
 		//TriggerKey tkey = new TriggerKey(jobLogLatest.getJobName());

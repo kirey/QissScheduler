@@ -2,6 +2,9 @@ package com.kubris.qiss.utils;
 
 public class AppConstants {
 
+	//GROUPS
+	public static final String GROUP_NAME = "group1";
+	
 	//SCHEDULER STATUS
 	public static final String SCHEDULER_STATUS_ACTIVE = "ACTIVE";
 	public static final String SCHEDULER_STATUS_INACTIVE = "INACTIVE";

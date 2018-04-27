@@ -1,26 +1,14 @@
 package com.kubris.qiss.rest.controller;
 
-import static org.quartz.CronScheduleBuilder.cronSchedule;
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TriggerBuilder.newTrigger;
-
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.quartz.CronTrigger;
-import org.quartz.JobDetail;
-import org.quartz.JobKey;
+import org.quartz.JobExecutionContext;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.Trigger;
-import org.quartz.Trigger.TriggerState;
-import org.quartz.TriggerKey;
-import org.quartz.impl.matchers.GroupMatcher;
+import org.quartz.UnableToInterruptJobException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kubris.qiss.data.dao.SchedulerExecutionLogDao;
@@ -36,8 +23,8 @@ import com.kubris.qiss.data.dao.SchedulersDao;
 import com.kubris.qiss.data.dto.ResponseDto;
 import com.kubris.qiss.data.entity.SchedulerExecutionLog;
 import com.kubris.qiss.data.entity.Schedulers;
-import com.kubris.qiss.features.quartz.jobs.SampleJob1;
 import com.kubris.qiss.features.quartz.jobs.SchedJobListener;
+import com.kubris.qiss.rest.service.JobService;
 import com.kubris.qiss.utils.AppConstants;
 
 @RestController
@@ -56,13 +43,10 @@ public class SchedulerController {
 	@Autowired
 	private SchedJobListener schedJobListener;
 	
+	@Autowired
+	JobService jobService;
+	
 	Logger logger = LoggerFactory.getLogger(getClass());
-
-	/*
-	 * @Autowired
-	 * 
-	 * @Qualifier("jobDetail1") private JobDetail jobDetail1;
-	 */
 
 	/**
 	 * get all jobs
@@ -149,48 +133,31 @@ public class SchedulerController {
 	 * @throws SchedulerException
 	 */
 	@RequestMapping(value = "/startJob/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDto> startJob(@PathVariable int id) throws SchedulerException {
+	public ResponseEntity<ResponseDto> startJob(@PathVariable int id) {
 		
-		Schedulers schedulerEnt = schedulersDao.findById(id);
-		CronTrigger cronTrigger = newTrigger().withIdentity(TriggerKey.triggerKey(schedulerEnt.getJobName(), "group1"))
-				.withSchedule(cronSchedule(schedulerEnt.getCronExpression())).build();
-
-		JobDetail jobDetail1 = newJob().ofType(SampleJob1.class).storeDurably()
-				.withIdentity(JobKey.jobKey(schedulerEnt.getJobName())).withDescription("Invoke Sample Job service...")
-				.build();
-
-		scheduler1.getListenerManager().addJobListener(schedJobListener);
-		scheduler1.scheduleJob(jobDetail1, cronTrigger);
-	    scheduler1.start();
-		
-		// update status u scheduler
-		schedulerEnt.setStatus(AppConstants.SCHEDULER_STATUS_ACTIVE);
-		schedulersDao.merge(schedulerEnt);
-		
-		return new ResponseEntity<ResponseDto>( new ResponseDto("Job started"), HttpStatus.OK); 
-
+		try {
+			jobService.startJob(id);
+			return new ResponseEntity<ResponseDto>( new ResponseDto("Job started"), HttpStatus.OK); 
+		} catch (SchedulerException e) {
+			return new ResponseEntity<ResponseDto>( new ResponseDto("Job starting failed"), HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
 	}
 
+	/**
+	 * MEthod for stopping job with given id
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/stopJob/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDto> stopJob(@PathVariable int id) throws SchedulerException {
+	public ResponseEntity<ResponseDto> stopJob(@PathVariable Integer id) {
 		
-		Schedulers schedulerEnt = schedulersDao.findById(id);
-		System.out.println(schedulerEnt.getJobName() + " Ime");
-		scheduler1.interrupt(JobKey.jobKey(schedulerEnt.getJobName()));
+		try {			
+			jobService.stopJob(id);
+			return new ResponseEntity<ResponseDto>( new ResponseDto("Job stopped sucesffully"), HttpStatus.OK); 
+		} catch ( SchedulerException e) {
+			return new ResponseEntity<ResponseDto>( new ResponseDto("Job starting failed: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
 		
-		schedulerEnt.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);
-
-
-		schedulersDao.attachDirty(schedulerEnt);
-		
-		SchedulerExecutionLog schedulerLogForUpdate = schedulerExecutionLogDao
-				.getLatestLogByJob(schedulerEnt.getJobName());
-		schedulerLogForUpdate.setStatus(AppConstants.JOB_STATUS_INTERRUPT);
-		schedulerLogForUpdate.setEndTimestamp(new Date());
-		
-		schedulerExecutionLogDao.attachDirty(schedulerLogForUpdate);
-
-		return new ResponseEntity<ResponseDto>( new ResponseDto("Job stopped"), HttpStatus.OK); 
 	}
 
 }

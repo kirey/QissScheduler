@@ -50,7 +50,7 @@ public class SchedJobListener implements JobListener {
 				.getLatestLogByJob(context.getJobDetail().getKey().getName());
 		logger.info("Ülazi u jobWasExecuted");
 		logger.info("FINISHING Log ID : " + jobLog.getId());
-		if (jobLog.getStatus().equals(AppConstants.JOB_STATUS_FINISHED_FAILED)) {
+		/*if (jobLog.getStatus().equals(AppConstants.JOB_STATUS_FINISHED_FAILED)) {
 			// ispravi
 		} else if (jobLog.getStatus().equals(AppConstants.JOB_STATUS_STARTED)) {
 			jobLog.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);
@@ -59,7 +59,10 @@ public class SchedJobListener implements JobListener {
 		} else {
 			System.out.println("Ulazi u job succeess");
 			jobLog.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);
-		}
+		}*/
+		
+		jobLog.setStatus(context.getJobDetail().getJobDataMap().getString("status"));
+		
 		jobLog.setEndTimestamp(new Date());
 
 		schedulerExecutionLogDao.merge(jobLog);
