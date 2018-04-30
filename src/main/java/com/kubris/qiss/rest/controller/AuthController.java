@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kubris.qiss.rest.security.UserAccount;
+import com.kubris.qiss.data.dto.UserLogin;
 
 /**
  * @author paunovicm
@@ -34,7 +34,7 @@ public class AuthController {
 	 * @return
 	 */
 	@RequestMapping(value = "/authentication", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> createUser(@RequestBody UserAccount userAccount) {
+	public ResponseEntity<Object> createUser(@RequestBody UserLogin userAccount) {
 		
 		Authentication authentication = null;
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

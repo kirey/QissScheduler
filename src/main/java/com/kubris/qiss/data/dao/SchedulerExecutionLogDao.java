@@ -44,7 +44,6 @@ public class SchedulerExecutionLogDao extends BaseDao {
 
 		return (SchedulerExecutionLog) sessionFactory.getCurrentSession().createQuery(hql)
 				.setParameter("jobName", jobName).uniqueResult();
-
 	}
 
 	public SchedulerExecutionLog getLogByName(String nameJob) {
