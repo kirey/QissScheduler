@@ -3,6 +3,9 @@ import { Component, OnInit, TemplateRef, ViewEncapsulation, ViewChild } from '@a
 import { BsModalService, ModalDirective } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
+import { Message } from 'primeng/components/common/api';
+import { MessageService } from 'primeng/components/common/messageservice';
+
 import { SchedulerService } from './scheduler.service';
 import { Button } from 'primeng/button';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -17,7 +20,11 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class SchedulerComponent implements OnInit {
 
-    constructor(public schedulerService: SchedulerService, private _modalService: BsModalService, public formBuilder: FormBuilder) { }
+    constructor(
+        public schedulerService: SchedulerService, 
+        private _modalService: BsModalService, 
+        public formBuilder: FormBuilder,  
+        private messageService: MessageService) { }
 
     jobs: any;
     jobForm: FormGroup;
@@ -50,6 +57,7 @@ export class SchedulerComponent implements OnInit {
                 res => {
                     console.log(res);
                     this.jobs = res;
+                    this.successMessage('Job successfully added.');
                     this.addJobModal.hide();
                 },
                 err => console.log(err)
@@ -80,6 +88,7 @@ export class SchedulerComponent implements OnInit {
                 res => {
                     console.log(res);
                     this.jobs = res;
+                    this.successMessage('Job successfully edited.');
                     this.editJobModal.hide();
                 },
                 err => console.log(err)
@@ -99,6 +108,7 @@ export class SchedulerComponent implements OnInit {
                 res => {
                     console.log(res);
                     this.jobs = res;
+                    this.successMessage('Job successfully deleted.');
                     this.deleteModal.hide();
                 },
                 err => console.log(err)
@@ -111,8 +121,8 @@ export class SchedulerComponent implements OnInit {
             .subscribe(
                 res => {
                     console.log(res);
+                    this.successMessage(res.message);
                     return job.status = 'ACTIVE';
-
                 },
                 err => console.log(err)
             )
@@ -124,6 +134,7 @@ export class SchedulerComponent implements OnInit {
             .subscribe(
                 res => {
                     console.log(res);
+                    this.successMessage(res.message);
                     return job.status = 'INACTIVE';
                 },
                 err => console.log(err)
@@ -141,6 +152,14 @@ export class SchedulerComponent implements OnInit {
                 },
                 err => console.log(err)
             );
+    }
+
+    // Growl Messages
+    successMessage(message) {
+        this.messageService.add({severity:'success', summary:'Success', detail: message});
+    }
+    errorMessage(message) {
+        this.messageService.add({severity:'error', summary:'Error', detail: message});
     }
 
     ngOnInit() {

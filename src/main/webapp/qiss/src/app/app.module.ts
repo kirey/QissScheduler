@@ -12,6 +12,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
+import { GrowlModule } from 'primeng/growl';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 // NGX BOOTSTRAP
 import { TooltipModule } from 'ngx-bootstrap';
@@ -40,13 +42,15 @@ import { SchedulerService } from './scheduler/scheduler.service';
         ButtonModule,
         TableModule,
         DialogModule,
+        GrowlModule,
         TooltipModule.forRoot(),
         ModalModule.forRoot()
     ],
     providers: [
         HttpClientModule,
         LoginService,
-        SchedulerService
+        SchedulerService,
+        MessageService
     ],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA

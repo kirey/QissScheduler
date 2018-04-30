@@ -8,6 +8,9 @@
             </button>
         </div>
 
+        <!-- Growl -->
+        <p-growl [(value)]="msgs"></p-growl>
+
         <!-- Table of JOBS -->
         <div *ngIf="jobs && jobs.length > 0">
             <p-table [value]="jobs" [responsive]="true">
