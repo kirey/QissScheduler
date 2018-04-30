@@ -1,6 +1,6 @@
-package com.kubris.qiss.rest.security;
+package com.kubris.qiss.data.dto;
 
-public class UserAccount {
+public class UserLogin {
 	
 	private String username;
 	private String password;
