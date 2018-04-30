@@ -26,8 +26,6 @@ public class SchedulersDao extends BaseDao{
 	@Transactional
 	public Schedulers findByJobName(String jobName) {
 		
-		//return (Schedulers) sessionFactory.getCurrentSession().createCriteria(Schedulers.class).add(Restrictions.eq("jobName", jobName)).uniqueResult();
-		
 		CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
         CriteriaQuery<Schedulers> query = builder.createQuery(Schedulers.class);
         

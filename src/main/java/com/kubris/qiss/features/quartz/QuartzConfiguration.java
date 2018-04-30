@@ -26,51 +26,49 @@ import com.kubris.qiss.features.quartz.jobs.SchedJobListener;
 @Configuration
 public class QuartzConfiguration {
 
-    Logger logger = LoggerFactory.getLogger(getClass());
-    
-    @Autowired
-    private ApplicationContext applicationContext;
+	Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Bean
-    public SpringBeanJobFactory springBeanJobFactory() {
-    	AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
-        logger.debug("Configuring Job factory");
+	@Autowired
+	private ApplicationContext applicationContext;
 
-        jobFactory.setApplicationContext(applicationContext);
-        return jobFactory;
-    }
-    
-    @Bean
-    public Scheduler scheduler() throws SchedulerException, IOException {
+	@Bean
+	public SpringBeanJobFactory springBeanJobFactory() {
+		AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
+		logger.debug("Configuring Job factory");
 
-        StdSchedulerFactory factory = new StdSchedulerFactory();
-        Scheduler scheduler = factory.getScheduler();
-        
-        //SchedJobListener schedJobListener = new SchedJobListener();
-        
-        //scheduler.getListenerManager().addJobListener(schedJobListener, GroupMatcher<JobKey>.AnyGroup());
-        scheduler.setJobFactory(springBeanJobFactory());
-       
-        return scheduler;
-    }
-    
-    @Bean(name="jobDetail1")
-    public JobDetail jobDetail1() {
+		jobFactory.setApplicationContext(applicationContext);
+		return jobFactory;
+	}
 
-        return newJob().ofType(SampleJob1.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_Job_Detail1")).withDescription("Invoke Sample Job service...").build();
-    }
-    
-    
-    @Bean(name="jobDetail2")
-    public JobDetail jobDetail2() {
+	@Bean
+	public Scheduler scheduler() throws SchedulerException, IOException {
 
-        return newJob().ofType(SampleJob2.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_Job_Detail2")).withDescription("Invoke Sample Job service...").build();
-    }
-    
-    @Bean(name="sampleJob1")
-    public Job sampleJob1() {
+		StdSchedulerFactory factory = new StdSchedulerFactory();
+		Scheduler scheduler = factory.getScheduler();
 
-        return ((Job) new SampleJob1());
-    }
+		scheduler.setJobFactory(springBeanJobFactory());
+
+		return scheduler;
+	}
+
+	@Bean(name = "jobDetail1")
+	public JobDetail jobDetail1() {
+
+		return newJob().ofType(SampleJob1.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_Job_Detail1"))
+				.withDescription("Invoke Sample Job service...").build();
+	}
+
+	@Bean(name = "jobDetail2")
+	public JobDetail jobDetail2() {
+
+		return newJob().ofType(SampleJob2.class).storeDurably().withIdentity(JobKey.jobKey("Qrtz_Job_Detail2"))
+				.withDescription("Invoke Sample Job service...").build();
+	}
+
+	@Bean(name = "sampleJob1")
+	public Job sampleJob1() {
+
+		return ((Job) new SampleJob1());
+	}
 
 }

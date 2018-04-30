@@ -3,7 +3,6 @@ package com.kubris.qiss.rest.service;
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.SchedulerException;
-import org.quartz.UnableToInterruptJobException;
 
 public interface JobService {
 

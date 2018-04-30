@@ -31,12 +31,12 @@ public class SchedJobListener implements JobListener {
 	public String getName() {
 		return LISTENER_NAME;
 	}
-	
+
 	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Override
 	public void jobToBeExecuted(JobExecutionContext context) {
-		
+
 	}
 
 	@Override
@@ -48,21 +48,10 @@ public class SchedJobListener implements JobListener {
 	public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
 		SchedulerExecutionLog jobLog = schedulerExecutionLogDao
 				.getLatestLogByJob(context.getJobDetail().getKey().getName());
-		logger.info("Ülazi u jobWasExecuted");
-		logger.info("FINISHING Log ID : " + jobLog.getId());
-		/*if (jobLog.getStatus().equals(AppConstants.JOB_STATUS_FINISHED_FAILED)) {
-			// ispravi
-		} else if (jobLog.getStatus().equals(AppConstants.JOB_STATUS_STARTED)) {
-			jobLog.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);
-		} else if (jobLog.getStatus().equals(AppConstants.JOB_STATUS_INTERRUPT)) {
-			// ispravi
-		} else {
-			System.out.println("Ulazi u job succeess");
-			jobLog.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);
-		}*/
-		
+		logger.info("jobWasExecuted::FINISHING Log ID : " + jobLog.getId());
+
 		jobLog.setStatus(context.getJobDetail().getJobDataMap().getString("status"));
-		
+
 		jobLog.setEndTimestamp(new Date());
 
 		schedulerExecutionLogDao.merge(jobLog);

@@ -38,15 +38,14 @@ public class SampleJob1 implements InterruptableJob {
 	private boolean loopControl = false;
 
 	private SchedulerExecutionLog jobLogLatest = null;
-	
+
 	private JobExecutionContext jobExecutionContext = null;
 
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		try {
 			jobExecutionContext = context;
-			
+
 			String jobName = context.getJobDetail().getKey().getName();
-			logger.info("Upisivanje posla u bazu sa imenom : " + jobName);
 
 			Schedulers scheduler = schedulersDao.findByJobName(jobName);
 
@@ -56,54 +55,39 @@ public class SampleJob1 implements InterruptableJob {
 			jobLog.setJobName(context.getJobDetail().getKey().getName());
 			jobLog.setScheduler(scheduler);
 			schedulerExecutionLogDao.persist(jobLog);
-			
+
 			jobLogLatest = schedulerExecutionLogDao.getLatestLogByJob(context.getJobDetail().getKey().getName());
 
 			loopControl = true;
-			System.out.println("");
 			for (int i = 0; i < 10 && loopControl; i++) {
 				Thread.currentThread().sleep(1000);
-				logger.info(
-						"EXECUTING:" + context.getJobDetail().getKey().getName() + "WITH LOG ID: " + jobLogLatest.getId());
+				logger.info("execute::EXECUTING:" + context.getJobDetail().getKey().getName() + "WITH LOG ID: "
+						+ jobLogLatest.getId());
 			}
-			logger.info("Zavrsena petlja");
-			
-			//uncomment this to cause exeption
-			//int p = 8/0;
-			
-			if(loopControl) {
-				//jobLogLatest.setStatus(AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);
+
+			if (loopControl) {
 				context.getJobDetail().getJobDataMap().put("status", AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);
-			}
-			else context.getJobDetail().getJobDataMap().put("status", AppConstants.JOB_STATUS_INTERRUPT);
-						
-			schedulerExecutionLogDao.merge(jobLogLatest);
+			} else
+				context.getJobDetail().getJobDataMap().put("status", AppConstants.JOB_STATUS_INTERRUPT);
+
+			// schedulerExecutionLogDao.merge(jobLogLatest);
 
 		} catch (Exception e) {
 
-			/*SchedulerExecutionLog jobLog = schedulerExecutionLogDao
-					.getLatestLogByJob(context.getJobDetail().getKey().getName());*/
-
-			//jobLogLatest.setStatus(AppConstants.JOB_STATUS_FINISHED_FAILED);
 			context.getJobDetail().getJobDataMap().put("status", AppConstants.JOB_STATUS_FINISHED_FAILED);
-			//schedulerExecutionLogDao.merge(jobLogLatest);
-			
-			
-			
-			//jobLog.setEndTimestamp(new Date()); // mm comm
 
-			schedulerExecutionLogDao.merge(jobLogLatest);
+			// schedulerExecutionLogDao.merge(jobLogLatest);
 		} finally {
 			JobExecutionException jobExecutionException = new JobExecutionException();
 			jobExecutionException.setUnscheduleAllTriggers(true);
-			
+
 		}
 
 	}
 
 	@Override
 	public void interrupt() throws UnableToInterruptJobException {
-		logger.info("Ulazi u interrupt " + jobLogLatest.getJobName());
+		logger.info("interrupt");
 		loopControl = false;
 	}
 }
