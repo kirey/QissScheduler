@@ -50,7 +50,7 @@ public class JobService {
 	@SuppressWarnings("unchecked")
 	public JobDetail createJob(String jobName, String groupName) throws ClassNotFoundException {
 
-		Job jobClass = (Job) applicationContext.getBean("sampleJob1");
+		Job jobClass = (Job) applicationContext.getBean(jobName);
 
 		JobDetail jobDetail = newJob().ofType(jobClass.getClass()).storeDurably()
 				.withIdentity(JobKey.jobKey(jobName, AppConstants.GROUP_NAME))

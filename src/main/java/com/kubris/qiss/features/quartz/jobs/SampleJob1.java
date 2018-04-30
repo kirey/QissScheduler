@@ -57,13 +57,16 @@ public class SampleJob1 implements InterruptableJob {
 			schedulerExecutionLogDao.persist(jobLog);
 
 			jobLogLatest = schedulerExecutionLogDao.getLatestLogByJob(context.getJobDetail().getKey().getName());
+			
+			logger.info("execute()::***EXECUTING SAMPLE JOB 1:" + context.getJobDetail().getKey().getName() + "WITH LOG ID: "
+					+ jobLogLatest.getId());
 
 			loopControl = true;
-			for (int i = 0; i < 10 && loopControl; i++) {
-				Thread.currentThread().sleep(1000);
-				logger.info("execute::EXECUTING:" + context.getJobDetail().getKey().getName() + "WITH LOG ID: "
-						+ jobLogLatest.getId());
-			}
+//			for (int i = 0; i < 10 && loopControl; i++) {
+//				Thread.currentThread().sleep(1000);
+//				logger.info("execute::EXECUTING:" + context.getJobDetail().getKey().getName() + "WITH LOG ID: "
+//						+ jobLogLatest.getId());
+//			}
 
 			if (loopControl) {
 				context.getJobDetail().getJobDataMap().put("status", AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);
