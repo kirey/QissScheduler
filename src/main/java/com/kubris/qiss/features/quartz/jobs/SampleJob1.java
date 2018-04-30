@@ -70,13 +70,10 @@ public class SampleJob1 implements InterruptableJob {
 			} else
 				context.getJobDetail().getJobDataMap().put("status", AppConstants.JOB_STATUS_INTERRUPT);
 
-			// schedulerExecutionLogDao.merge(jobLogLatest);
-
 		} catch (Exception e) {
 
 			context.getJobDetail().getJobDataMap().put("status", AppConstants.JOB_STATUS_FINISHED_FAILED);
 
-			// schedulerExecutionLogDao.merge(jobLogLatest);
 		} finally {
 			JobExecutionException jobExecutionException = new JobExecutionException();
 			jobExecutionException.setUnscheduleAllTriggers(true);
