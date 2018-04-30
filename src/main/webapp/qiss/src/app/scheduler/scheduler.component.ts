@@ -29,11 +29,6 @@ export class SchedulerComponent implements OnInit {
     @ViewChild('historyModal') historyModal: ModalDirective;
     @ViewChild('deleteModal') deleteModal: ModalDirective;
 
-
-    reload() {
-        location.reload();
-    }
-
     // Add Job Modal
     openAddJobModal() {
         this.addJobModal.show();
@@ -54,8 +49,8 @@ export class SchedulerComponent implements OnInit {
             .subscribe(
                 res => {
                     console.log(res);
+                    this.jobs = res;
                     this.addJobModal.hide();
-                    this.reload();
                 },
                 err => console.log(err)
             );
@@ -84,8 +79,8 @@ export class SchedulerComponent implements OnInit {
             .subscribe(
                 res => {
                     console.log(res);
+                    this.jobs = res;
                     this.editJobModal.hide();
-                    this.reload();
                 },
                 err => console.log(err)
             );
@@ -103,32 +98,33 @@ export class SchedulerComponent implements OnInit {
             .subscribe(
                 res => {
                     console.log(res);
+                    this.jobs = res;
                     this.deleteModal.hide();
-                    this.reload();
                 },
                 err => console.log(err)
             );
     }
 
     // Start Job
-    start(id) {
-        this.schedulerService.startJob(id)
+    start(job) {
+        this.schedulerService.startJob(job.id)
             .subscribe(
                 res => {
                     console.log(res);
-                    this.reload();
+                    return job.status = 'ACTIVE';
+
                 },
                 err => console.log(err)
             )
     }
 
     // Stop Job
-    stop(id) {
-        this.schedulerService.stopJob(id)
+    stop(job) {
+        this.schedulerService.stopJob(job.id)
             .subscribe(
                 res => {
                     console.log(res);
-                    this.reload();
+                    return job.status = 'INACTIVE';
                 },
                 err => console.log(err)
             )

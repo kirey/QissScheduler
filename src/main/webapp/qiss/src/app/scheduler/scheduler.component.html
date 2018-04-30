@@ -1,6 +1,5 @@
 <div id="scheduler">
     <div class="container">
-
         <!-- Header -->
         <div class="header">
             <h1>Scheduler</h1>
@@ -28,8 +27,8 @@
                         <td>{{job.status}}</td>
                         <td>{{job.cronExpression}}</td>
                         <td>
-                            <i class="fa fa-stop-circle pull-right" (click)="stop(job.id)" *ngIf="job.status==='ACTIVE'" tooltip='Unschedule Job'></i>
-                            <i class="fa fa-play-circle pull-right" (click)="start(job.id)" *ngIf="job.status==='INACTIVE'" tooltip='Schedule Job'></i>
+                            <i class="fa fa-stop-circle pull-right" (click)="stop(job)" *ngIf="job.status==='ACTIVE'" tooltip='Unschedule Job'></i>
+                            <i class="fa fa-play-circle pull-right" (click)="start(job)" *ngIf="job.status==='INACTIVE'" tooltip='Schedule Job'></i>
                         </td>
                         <td>
                             <i class="fa fa-trash pull-right" (click)="openDeleteJobModal(job)" tooltip='Delete Job'></i>
