@@ -13,7 +13,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath:/META-INF/config/qiss-context.xml
-			classpath:/META-INF/config/context-security.xml
+			classpath:/META-INF/config/qiss-context-security.xml
 			classpath:/META-INF/config/qiss-context-persistence.xml
         </param-value>
 	</context-param>
@@ -21,16 +21,12 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	<servlet>
-		<servlet-name>QISS</servlet-name>
+		<servlet-name>qiss</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:/META-INF/config/spring-webmvc-rest.xml</param-value>
-		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>QISS</servlet-name>
+		<servlet-name>qiss</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	<filter>
