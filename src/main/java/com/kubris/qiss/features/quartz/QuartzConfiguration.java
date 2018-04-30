@@ -70,5 +70,11 @@ public class QuartzConfiguration {
 
 		return ((Job) new SampleJob1());
 	}
+	
+	@Bean(name = "sampleJob2")
+	public Job sampleJob2() {
+
+		return ((Job) new SampleJob2());
+	}
 
 }
