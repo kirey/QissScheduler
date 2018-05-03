@@ -275,7 +275,7 @@ exports.LoginService = LoginService;
 /***/ "./src/app/scheduler/scheduler.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"scheduler\">\r\n    <div class=\"container\">\r\n        <!-- Header -->\r\n        <div class=\"header\">\r\n            <h1>Scheduler</h1>\r\n            <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"openAddJobModal()\" tooltip='Add Job'>\r\n                <i class=\"fa fa-plus\"></i>\r\n            </button>\r\n        </div>\r\n\r\n        <!-- Growl -->\r\n        <p-growl [(value)]=\"msgs\"></p-growl>\r\n\r\n        <!-- Table of JOBS -->\r\n        <div *ngIf=\"jobs && jobs.length > 0\">\r\n            <p-table [value]=\"jobs\" [responsive]=\"true\">\r\n                <ng-template pTemplate=\"header\">\r\n                    <tr class=\"table-header\">\r\n                        <th>Job Name</th>\r\n                        <th>Current Status</th>\r\n                        <th>Cron Expression</th>\r\n                        <th>Change Status</th>\r\n                        <th>Actions</th>\r\n                        <th>History</th>\r\n                    </tr>\r\n                </ng-template>\r\n                <ng-template pTemplate=\"body\" let-job>\r\n                    <tr class=\"table-row\">\r\n                        <td>{{job.jobName}}</td>\r\n                        <td>{{job.status}}</td>\r\n                        <td>{{job.cronExpression}}</td>\r\n                        <td>\r\n                            <i class=\"fa fa-stop-circle pull-right\" (click)=\"stop(job)\" *ngIf=\"job.status==='ACTIVE'\" tooltip='Unschedule Job'></i>\r\n                            <i class=\"fa fa-play-circle pull-right\" (click)=\"start(job)\" *ngIf=\"job.status==='INACTIVE'\" tooltip='Schedule Job'></i>\r\n                        </td>\r\n                        <td>\r\n                            <i class=\"fa fa-trash pull-right\" (click)=\"openDeleteJobModal(job)\" tooltip='Delete Job'></i>\r\n                            <i class=\"fa fa-edit  pull-right\" (click)=\"openEditJobModal(job)\" tooltip='Edit Job'></i>\r\n                        </td>\r\n                        <td class=\"history\">\r\n                            <i class=\"fa fa-history\" tooltip='Check Job History' (click)=\"openHistoryModal(job.id)\"></i>\r\n                        </td>\r\n                    </tr>\r\n                </ng-template>\r\n            </p-table>\r\n        </div>\r\n\r\n        <!-- ADD JOB MODAL -->\r\n        <div class=\"modal fade\" bsModal #addJobModal=\"bs-modal\" [config]=\"{backdrop: 'static'}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"Add Job\"\r\n            aria-hidden=\"true\">\r\n            <div class=\"modal-dialog modal-lg\">\r\n                <div class=\"modal-content\">\r\n                    <div class=\"modal-header\"> \r\n                        <h4 class=\"modal-title pull-left\">Add Job</h4>\r\n                        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addJobModal.hide()\">\r\n                            <span aria-hidden=\"true\">&times;</span>\r\n                        </button>\r\n                    </div>\r\n                    <div class=\"modal-body\" *ngIf=\"jobForm\">\r\n                        <form [formGroup]=\"jobForm\" (ngSubmit)=\"addJob()\">\r\n                            <!-- Job Name Input -->\r\n                            <div class=\"form-group\">\r\n                                <label for=\"jobName\">Job Name</label>\r\n                                <div class=\"input-group\">\r\n                                    <input formControlName=\"jobName\" type=\"text\" id=\"jobName\" class=\"form-control\" placeholder=\"Enter Job Name\" aria-label=\"Job Name\">\r\n                                </div>\r\n                                <div *ngIf=\"jobName.touched && jobName.errors\" class=\"text-danger\">\r\n                                    Job Name is required.\r\n                                </div>\r\n                            </div>\r\n                            <!-- Cron Expression Input -->\r\n                            <div class=\"form-group\">\r\n                                <label for=\"cronExpression\">Cron Expression</label>\r\n                                <div class=\"input-group\">\r\n                                    <input formControlName=\"cronExpression\" id=\"cronExpression\" class=\"form-control\" placeholder=\"Enter Cron Expression\" aria-label=\"Cron Expression\">\r\n                                </div>\r\n                                <div *ngIf=\"cronExpression.touched && cronExpression.errors\" class=\"text-danger\">\r\n                                    Cron Expression is required.\r\n                                </div>\r\n                            </div>\r\n                            <button type=\"button\" class=\"btn btn-transparent pull-right\" (click)=\"addJobModal.hide()\">Cancel</button>\r\n                            <button type=\"submit\" class=\"btn btn-dark pull-right\" [disabled]=\"jobName.errors || cronExpression.errors\">Submit</button>\r\n                        </form>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <!-- EDIT JOB MODAL -->\r\n        <div class=\"modal fade\" bsModal #editJobModal=\"bs-modal\" [config]=\"{backdrop: 'static'}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"Edit Job\"\r\n            aria-hidden=\"true\">\r\n            <div class=\"modal-dialog modal-lg\">\r\n                <div class=\"modal-content\">\r\n                    <div class=\"modal-header\">\r\n                        <h4 class=\"modal-title pull-left\">Edit Job</h4>\r\n                        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"editJobModal.hide()\">\r\n                            <span aria-hidden=\"true\">&times;</span>\r\n                        </button>\r\n                    </div>\r\n                    <div class=\"modal-body\" *ngIf=\"jobForm\">\r\n                        <form [formGroup]=\"jobForm\" (ngSubmit)=\"editJob()\">\r\n                            <!-- Job Name Input -->\r\n                            <div class=\"form-group\">\r\n                                <label for=\"jobName\">Job Name</label>\r\n                                <div class=\"input-group\">\r\n                                    <input formControlName=\"jobName\" type=\"text\" id=\"jobName\" class=\"form-control\" placeholder=\"Enter Job Name\" aria-label=\"Job Name\">\r\n                                </div>\r\n                                <div *ngIf=\"jobName.touched && jobName.errors\" class=\"text-danger\">\r\n                                    Job Name is required.\r\n                                </div>\r\n                            </div>\r\n                            <!-- Cron Expression Input -->\r\n                            <div class=\"form-group\">\r\n                                <label for=\"cronExpression\">Cron Expression</label>\r\n                                <div class=\"input-group\">\r\n                                    <input formControlName=\"cronExpression\" id=\"cronExpression\" class=\"form-control\" placeholder=\"Enter Cron Expression\" aria-label=\"Cron Expression\">\r\n                                </div>\r\n                                <div *ngIf=\"cronExpression.touched && cronExpression.errors\" class=\"text-danger\">\r\n                                    Cron Expression is required.\r\n                                </div>\r\n                            </div>\r\n                            <button type=\"button\" class=\"btn btn-transparent pull-right\" (click)=\"editJobModal.hide()\">Cancel</button>\r\n                            <button type=\"submit\" class=\"btn btn-dark pull-right\" [disabled]=\"jobName.errors || cronExpression.errors\">Submit</button>\r\n                        </form>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <!-- HISTORY MODAL -->\r\n        <div class=\"modal fade\" bsModal #historyModal=\"bs-modal\" [config]=\"{backdrop: 'static'}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"Job History\"\r\n            aria-hidden=\"true\">\r\n            <div class=\"modal-dialog modal-lg\">\r\n                <div class=\"modal-content\">\r\n                    <div class=\"modal-header\">\r\n                        <h4 class=\"modal-title pull-left\">Job History</h4>\r\n                        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"historyModal.hide()\">\r\n                            <span aria-hidden=\"true\">&times;</span>\r\n                        </button>\r\n                    </div>\r\n                    <div class=\"modal-body\">\r\n                        <div class=\"history-container\" *ngIf=\"jobHistoryArray && jobHistoryArray.length > 0\">\r\n                            <div *ngFor=\"let history of jobHistoryArray\">\r\n                                <div class=\"row\">\r\n                                    <div class=\"col-md-6\">\r\n                                        <p>\r\n                                            <b>Job Name: </b>{{history.jobName}}\r\n                                            <br>\r\n                                            <b>Status: </b>{{history.status}}\r\n                                            <br>\r\n                                            <b>Cron Expression: </b>{{history.scheduler.cronExpression}}\r\n                                        </p>\r\n                                    </div>\r\n                                    <div class=\"col-md-6\">\r\n                                        <p>\r\n                                            <b>Start Time: </b>{{history.startTimestamp}}\r\n                                            <br>\r\n                                            <b>Stop Time: </b>{{history.endTimestamp}}\r\n                                        </p>\r\n                                    </div>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"modal-footer\">\r\n                        <button type=\"button\" class=\"btn btn-transparent\" (click)=\"historyModal.hide()\">Cancel</button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <!-- DELETE MODAL -->\r\n        <div class=\"modal fade\" bsModal #deleteModal=\"bs-modal\" [config]=\"{backdrop: 'static'}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"Delete Job\"\r\n            aria-hidden=\"true\">\r\n            <div class=\"modal-dialog modal-lg\">\r\n                <div class=\"modal-content\">\r\n                    <div class=\"modal-header\">\r\n                        <h4 class=\"modal-title pull-left\">Delete Job</h4>\r\n                        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"deleteModal.hide()\">\r\n                            <span aria-hidden=\"true\">&times;</span>\r\n                        </button>\r\n                    </div>\r\n                    <div class=\"modal-body\">\r\n                        <h5 class=\"delete-modal-txt\">Are you sure you want to delete job?</h5>\r\n                    </div>\r\n                    <div class=\"modal-footer\">\r\n                        <button type=\"button\" class=\"btn btn-danger\" (click)=\"deleteJob()\">Delete</button>\r\n                        <button type=\"button\" class=\"btn btn-transparent\" (click)=\"deleteModal.hide()\">Cancel</button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
+module.exports = "<div id=\"scheduler\">\r\n    <div class=\"container\">\r\n        <!-- Header -->\r\n        <div class=\"header\">\r\n            <h1>Scheduler</h1>\r\n            <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"openAddJobModal()\" tooltip='Add Job'>\r\n                <i class=\"fa fa-plus\"></i>\r\n            </button>\r\n        </div>\r\n\r\n        <!-- Growl -->\r\n        <p-growl [(value)]=\"msgs\"></p-growl>\r\n\r\n        <!-- Table of JOBS -->\r\n        <div *ngIf=\"jobs && jobs.length > 0\">\r\n            <p-table [value]=\"jobs\" [responsive]=\"true\">\r\n                <ng-template pTemplate=\"header\">\r\n                    <tr class=\"table-header\">\r\n                        <th>Job Name</th>\r\n                        <th>Current Status</th>\r\n                        <th>Cron Expression</th>\r\n                        <th>Change Status</th>\r\n                        <th>Actions</th>\r\n                        <th>History</th>\r\n                    </tr>\r\n                </ng-template>\r\n                <ng-template pTemplate=\"body\" let-job>\r\n                    <tr class=\"table-row\">\r\n                        <td>{{job.jobName}}</td>\r\n                        <td>{{job.status}}</td>\r\n                        <td>{{job.cronExpression}}</td>\r\n                        <td>\r\n                            <i class=\"fa fa-stop-circle pull-right\" (click)=\"stop(job)\" *ngIf=\"job.status==='ACTIVE'\" tooltip='Unschedule Job'></i>\r\n                            <i class=\"fa fa-play-circle pull-right\" (click)=\"start(job)\" *ngIf=\"job.status==='INACTIVE'\" tooltip='Schedule Job'></i>\r\n                        </td>\r\n                        <td>\r\n                            <i class=\"fa fa-trash pull-right\" (click)=\"openDeleteJobModal(job)\" tooltip='Delete Job'></i>\r\n                            <i class=\"fa fa-edit  pull-right\" (click)=\"openEditJobModal(job)\" tooltip='Edit Job'></i>\r\n                        </td>\r\n                        <td class=\"history\">\r\n                            <i class=\"fa fa-history\" tooltip='Check Job History' (click)=\"openHistoryModal(job.id)\"></i>\r\n                        </td>\r\n                    </tr>\r\n                </ng-template>\r\n            </p-table>\r\n        </div>\r\n\r\n        <!-- ADD JOB MODAL -->\r\n        <div class=\"modal fade\" bsModal #addJobModal=\"bs-modal\" [config]=\"{backdrop: 'static'}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"Add Job\"\r\n            aria-hidden=\"true\">\r\n            <div class=\"modal-dialog modal-lg\">\r\n                <div class=\"modal-content\">\r\n                    <div class=\"modal-header\"> \r\n                        <h4 class=\"modal-title pull-left\">Add Job</h4>\r\n                        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"addJobModal.hide()\">\r\n                            <span aria-hidden=\"true\">&times;</span>\r\n                        </button>\r\n                    </div>\r\n                    <div class=\"modal-body\" *ngIf=\"jobForm\">\r\n                        <form [formGroup]=\"jobForm\" (ngSubmit)=\"addJob()\">\r\n                            <!-- Job Name Input -->\r\n                            <div class=\"form-group\">\r\n                                <label for=\"jobName\">Job Name</label>\r\n                                <div class=\"input-group\">\r\n                                    <input formControlName=\"jobName\" type=\"text\" id=\"jobName\" class=\"form-control\" placeholder=\"Enter Job Name\" aria-label=\"Job Name\">\r\n                                </div>\r\n                                <div *ngIf=\"jobName.touched && jobName.errors\" class=\"text-danger\">\r\n                                    Job Name is required.\r\n                                </div>\r\n                            </div>\r\n                            <!-- Cron Expression Input -->\r\n                            <div class=\"form-group\">\r\n                                <label for=\"cronExpression\">Cron Expression</label>\r\n                                <div class=\"input-group\">\r\n                                    <input formControlName=\"cronExpression\" id=\"cronExpression\" class=\"form-control\" placeholder=\"Enter Cron Expression\" aria-label=\"Cron Expression\">\r\n                                </div>\r\n                                <div *ngIf=\"cronExpression.touched && cronExpression.errors\" class=\"text-danger\">\r\n                                    Cron Expression is required.\r\n                                </div>\r\n                            </div>\r\n                            <button type=\"button\" class=\"btn btn-transparent pull-right\" (click)=\"addJobModal.hide()\">Cancel</button>\r\n                            <button type=\"submit\" class=\"btn btn-dark pull-right\" [disabled]=\"jobName.errors || cronExpression.errors\">Submit</button>\r\n                        </form>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <!-- EDIT JOB MODAL -->\r\n        <div class=\"modal fade\" bsModal #editJobModal=\"bs-modal\" [config]=\"{backdrop: 'static'}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"Edit Job\"\r\n            aria-hidden=\"true\">\r\n            <div class=\"modal-dialog modal-lg\">\r\n                <div class=\"modal-content\">\r\n                    <div class=\"modal-header\">\r\n                        <h4 class=\"modal-title pull-left\">Edit Job</h4>\r\n                        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"editJobModal.hide()\">\r\n                            <span aria-hidden=\"true\">&times;</span>\r\n                        </button>\r\n                    </div>\r\n                    <div class=\"modal-body\" *ngIf=\"jobForm\">\r\n                        <form [formGroup]=\"jobForm\" (ngSubmit)=\"editJob()\">\r\n                            <!-- Job Name Input -->\r\n                            <div class=\"form-group\">\r\n                                <label for=\"jobName\">Job Name</label>\r\n                                <div class=\"input-group\">\r\n                                    <input formControlName=\"jobName\" type=\"text\" id=\"jobName\" class=\"form-control\" placeholder=\"Enter Job Name\" aria-label=\"Job Name\">\r\n                                </div>\r\n                                <div *ngIf=\"jobName.touched && jobName.errors\" class=\"text-danger\">\r\n                                    Job Name is required.\r\n                                </div>\r\n                            </div>\r\n                            <!-- Cron Expression Input -->\r\n                            <div class=\"form-group\">\r\n                                <label for=\"cronExpression\">Cron Expression</label>\r\n                                <div class=\"input-group\">\r\n                                    <input formControlName=\"cronExpression\" id=\"cronExpression\" class=\"form-control\" placeholder=\"Enter Cron Expression\" aria-label=\"Cron Expression\">\r\n                                </div>\r\n                                <div *ngIf=\"cronExpression.touched && cronExpression.errors\" class=\"text-danger\">\r\n                                    Cron Expression is required.\r\n                                </div>\r\n                            </div>\r\n                            <button type=\"button\" class=\"btn btn-transparent pull-right\" (click)=\"editJobModal.hide()\">Cancel</button>\r\n                            <button type=\"submit\" class=\"btn btn-dark pull-right\" [disabled]=\"jobName.errors || cronExpression.errors\">Submit</button>\r\n                        </form>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <!-- HISTORY MODAL -->\r\n        <div class=\"modal fade\" bsModal #historyModal=\"bs-modal\" [config]=\"{backdrop: 'static'}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"Job History\"\r\n            aria-hidden=\"true\">\r\n            <div class=\"modal-dialog modal-lg\">\r\n                <div class=\"modal-content\">\r\n                    <div class=\"modal-header\">\r\n                        <h4 class=\"modal-title pull-left\">Job History</h4>\r\n                        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"historyModal.hide()\">\r\n                            <span aria-hidden=\"true\">&times;</span>\r\n                        </button>\r\n                    </div>\r\n                    <div class=\"modal-body\">\r\n                        <div class=\"history-container\" *ngIf=\"jobHistoryArray && jobHistoryArray.length > 0\">\r\n                            <div *ngFor=\"let history of jobHistoryArray\">\r\n                                <div class=\"row\">\r\n                                    <div class=\"col-md-6\">\r\n                                        <p>\r\n                                            <b>Job Name: </b>{{history.jobName}}\r\n                                            <br>\r\n                                            <b>Status: </b>{{history.status}}\r\n                                            <br>\r\n                                            <b>Cron Expression: </b>{{history.scheduler.cronExpression}}\r\n                                        </p>\r\n                                    </div>\r\n                                    <div class=\"col-md-6\">\r\n                                        <p>\r\n                                            <b>Start Time: </b>{{formatDate(history.startTimestamp)}}\r\n                                            <br>\r\n                                            <b>Stop Time: </b>{{formatDate(history.endTimestamp)}}\r\n                                        </p>\r\n                                    </div>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"modal-footer\">\r\n                        <button type=\"button\" class=\"btn btn-transparent\" (click)=\"historyModal.hide()\">Cancel</button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <!-- DELETE MODAL -->\r\n        <div class=\"modal fade\" bsModal #deleteModal=\"bs-modal\" [config]=\"{backdrop: 'static'}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"Delete Job\"\r\n            aria-hidden=\"true\">\r\n            <div class=\"modal-dialog modal-lg\">\r\n                <div class=\"modal-content\">\r\n                    <div class=\"modal-header\">\r\n                        <h4 class=\"modal-title pull-left\">Delete Job</h4>\r\n                        <button type=\"button\" class=\"close pull-right\" aria-label=\"Close\" (click)=\"deleteModal.hide()\">\r\n                            <span aria-hidden=\"true\">&times;</span>\r\n                        </button>\r\n                    </div>\r\n                    <div class=\"modal-body\">\r\n                        <h5 class=\"delete-modal-txt\">Are you sure you want to delete job?</h5>\r\n                    </div>\r\n                    <div class=\"modal-footer\">\r\n                        <button type=\"button\" class=\"btn btn-danger\" (click)=\"deleteJob()\">Delete</button>\r\n                        <button type=\"button\" class=\"btn btn-transparent\" (click)=\"deleteModal.hide()\">Cancel</button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -314,6 +314,52 @@ var SchedulerComponent = /** @class */ (function () {
         this.messageService = messageService;
         this.jobHistoryArray = [];
     }
+    //Format Date
+    SchedulerComponent.prototype.formatDate = function (ts) {
+        var date = new Date(ts);
+        var d = date.getDate();
+        var m = date.getMonth() + 1;
+        var y = date.getFullYear();
+        switch (m) {
+            case 1:
+                m = 'January';
+                break;
+            case 2:
+                m = 'February';
+                break;
+            case 3:
+                m = 'March';
+                break;
+            case 4:
+                m = 'April';
+                break;
+            case 5:
+                m = 'May';
+                break;
+            case 6:
+                m = 'June';
+                break;
+            case 7:
+                m = 'July';
+                break;
+            case 8:
+                m = 'August';
+                break;
+            case 9:
+                m = 'September';
+                break;
+            case 10:
+                m = 'October';
+                break;
+            case 11:
+                m = 'November';
+                break;
+            case 12:
+                m = 'December';
+                break;
+        }
+        return m + ' ' + d + ', ' + y;
+    };
     // Add Job Modal
     SchedulerComponent.prototype.openAddJobModal = function () {
         this.addJobModal.show();
@@ -336,7 +382,10 @@ var SchedulerComponent = /** @class */ (function () {
             _this.jobs = res;
             _this.successMessage('Job successfully added.');
             _this.addJobModal.hide();
-        }, function (err) { return console.log(err); });
+        }, function (err) {
+            console.log(err);
+            _this.errorMessage();
+        });
     };
     ;
     // Edit Job Modal
@@ -364,7 +413,10 @@ var SchedulerComponent = /** @class */ (function () {
             _this.jobs = res;
             _this.successMessage('Job successfully edited.');
             _this.editJobModal.hide();
-        }, function (err) { return console.log(err); });
+        }, function (err) {
+            console.log(err);
+            _this.errorMessage();
+        });
     };
     ;
     // Delete Job Modal
@@ -381,7 +433,10 @@ var SchedulerComponent = /** @class */ (function () {
             _this.jobs = res;
             _this.successMessage('Job successfully deleted.');
             _this.deleteModal.hide();
-        }, function (err) { return console.log(err); });
+        }, function (err) {
+            console.log(err);
+            _this.errorMessage();
+        });
     };
     // Start Job
     SchedulerComponent.prototype.start = function (job) {
@@ -391,7 +446,10 @@ var SchedulerComponent = /** @class */ (function () {
             console.log(res);
             _this.successMessage(res.message);
             return job.status = 'ACTIVE';
-        }, function (err) { return console.log(err); });
+        }, function (err) {
+            console.log(err);
+            _this.errorMessage();
+        });
     };
     // Stop Job
     SchedulerComponent.prototype.stop = function (job) {
@@ -401,7 +459,10 @@ var SchedulerComponent = /** @class */ (function () {
             console.log(res);
             _this.successMessage(res.message);
             return job.status = 'INACTIVE';
-        }, function (err) { return console.log(err); });
+        }, function (err) {
+            console.log(err);
+            _this.errorMessage();
+        });
     };
     //History Modal
     SchedulerComponent.prototype.openHistoryModal = function (id) {
@@ -411,14 +472,17 @@ var SchedulerComponent = /** @class */ (function () {
             .subscribe(function (res) {
             console.log(res);
             _this.jobHistoryArray = res;
-        }, function (err) { return console.log(err); });
+        }, function (err) {
+            console.log(err);
+            _this.errorMessage();
+        });
     };
     // Growl Messages
     SchedulerComponent.prototype.successMessage = function (message) {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
     };
-    SchedulerComponent.prototype.errorMessage = function (message) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
+    SchedulerComponent.prototype.errorMessage = function () {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong.' });
     };
     SchedulerComponent.prototype.ngOnInit = function () {
         var _this = this;

@@ -36,6 +36,56 @@ export class SchedulerComponent implements OnInit {
     @ViewChild('historyModal') historyModal: ModalDirective;
     @ViewChild('deleteModal') deleteModal: ModalDirective;
 
+
+    //Format Date
+    formatDate(ts) {
+        let date = new Date(ts);
+        let d = date.getDate();
+        let m:any = date.getMonth()+1;
+        let y = date.getFullYear();
+
+        switch(m) {
+            case 1:
+            m = 'January';
+            break;
+            case 2:
+            m = 'February';
+            break;
+            case 3:
+            m = 'March';
+            break;
+            case 4:
+            m = 'April';
+            break;
+            case 5:
+            m = 'May';
+            break;
+            case 6:
+            m = 'June';
+            break;
+            case 7:
+            m = 'July';
+            break;
+            case 8:
+            m = 'August';
+            break;
+            case 9:
+            m = 'September';
+            break;
+            case 10:
+            m = 'October';
+            break;
+            case 11:
+            m = 'November';
+            break;
+            case 12:
+            m = 'December';
+            break;
+        }
+
+        return m + ' ' + d + ', ' + y;
+    }    
+
     // Add Job Modal
     openAddJobModal() {
         this.addJobModal.show();
@@ -60,7 +110,10 @@ export class SchedulerComponent implements OnInit {
                     this.successMessage('Job successfully added.');
                     this.addJobModal.hide();
                 },
-                err => console.log(err)
+                err => {
+                    console.log(err);
+                    this.errorMessage();
+                }
             );
     };
 
@@ -91,7 +144,10 @@ export class SchedulerComponent implements OnInit {
                     this.successMessage('Job successfully edited.');
                     this.editJobModal.hide();
                 },
-                err => console.log(err)
+                err => {
+                    console.log(err);
+                    this.errorMessage();
+                }
             );
     };
 
@@ -111,7 +167,10 @@ export class SchedulerComponent implements OnInit {
                     this.successMessage('Job successfully deleted.');
                     this.deleteModal.hide();
                 },
-                err => console.log(err)
+                err => {
+                    console.log(err);
+                    this.errorMessage();
+                }
             );
     }
 
@@ -124,7 +183,10 @@ export class SchedulerComponent implements OnInit {
                     this.successMessage(res.message);
                     return job.status = 'ACTIVE';
                 },
-                err => console.log(err)
+                err => {
+                    console.log(err);
+                    this.errorMessage();
+                }
             )
     }
 
@@ -137,7 +199,10 @@ export class SchedulerComponent implements OnInit {
                     this.successMessage(res.message);
                     return job.status = 'INACTIVE';
                 },
-                err => console.log(err)
+                err => {
+                    console.log(err);
+                    this.errorMessage();
+                } 
             )
     }
 
@@ -150,7 +215,10 @@ export class SchedulerComponent implements OnInit {
                     console.log(res);
                     this.jobHistoryArray = res;
                 },
-                err => console.log(err)
+                err => {
+                    console.log(err)
+                    this.errorMessage();
+                }
             );
     }
 
@@ -158,8 +226,8 @@ export class SchedulerComponent implements OnInit {
     successMessage(message) {
         this.messageService.add({severity:'success', summary:'Success', detail: message});
     }
-    errorMessage(message) {
-        this.messageService.add({severity:'error', summary:'Error', detail: message});
+    errorMessage() {
+        this.messageService.add({severity:'error', summary:'Error', detail: 'Something went wrong.'});
     }
 
     ngOnInit() {
