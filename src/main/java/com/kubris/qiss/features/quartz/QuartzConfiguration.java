@@ -65,16 +65,5 @@ public class QuartzConfiguration {
 				.withDescription("Invoke Sample Job service...").build();
 	}
 
-	@Bean(name = "sampleJob1")
-	public Job sampleJob1() {
-
-		return ((Job) new SampleJob1());
-	}
-	
-	@Bean(name = "sampleJob2")
-	public Job sampleJob2() {
-
-		return ((Job) new SampleJob2());
-	}
 
 }
