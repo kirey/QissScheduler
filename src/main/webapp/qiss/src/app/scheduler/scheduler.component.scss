@@ -1,0 +1,110 @@
+#scheduler {
+    .container {
+        padding-top: 100px;
+    }
+    h1 {
+       color: #323232;
+       margin-bottom: 50px;
+    }
+    .header {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .header>button {
+        border: 2px solid #424242;
+        border-radius: 50%;
+        padding: 13px 18px;
+    }
+    .fa-plus {
+        font-size: 20px;
+        margin: 0!important;
+    }
+    
+    // Table
+    th {
+        font-size: 20px;
+        padding: 13px;
+    }
+    .table-header>th {
+        background: #424242;
+        color: #fff;
+    }
+    .table-row {
+        background-color: #FAFAFA;
+        color: #424242;
+    }
+    .table-row:hover {
+        background-color: #F5F5F5;
+    }
+
+    // Table Icons
+    .history {
+        text-align: center;
+    }
+    .history-container {
+        height: 800px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+    .history-container>div {
+        border: 1px solid #eee;
+        margin: 5px 10px;
+        padding: 15px 10px;
+        color: #424242;
+    }
+    .delete-modal-txt {
+        text-align: center;
+    }
+    .fa { margin: 5px 10px; }
+    .fa-stop-circle { color: #B71C1C; }
+    .fa-stop-circle:hover { color: #C62828 };
+    .fa-play-circle { color: #1B5E20; }
+    .fa-play-circle:hover { color: #2E7D32; }
+    .fa-edit, .fa-start-circle { margin-top: 8px;}
+    .fa:hover { cursor: pointer; }
+    .fa-stop-circle, .fa-play-circle { font-size: 30px; }
+    .fa-trash, .fa-edit, .fa-history { font-size: 25px; }
+    .fa-trash:hover { color: #B71C1C; }
+    .fa-edit:hover, .fa-history:hover { color: #F57F17; }
+
+    // Add Job Modal
+    .add-job-modal {
+        background-color: #fff;
+        border: none;
+    }
+    .add-job-modal a:hover {
+        background: #F57F17;
+        border-color: #E65100;
+    }
+    .ui-widget-header {
+        background: #424242;
+        color: #fff;
+    }
+
+    button {
+        margin: 0 5px;
+    }
+
+    // Growl Messages Style
+    .ui-growl-item {
+        color: #FFF;
+        padding-left: 20px!important;
+    }
+    .ui-growl-message-error .ui-growl-item {
+    background-color: #cc3f3c;
+    }
+        
+    .ui-growl-message-info .ui-growl-item {
+    background-color: #3877d4;
+    }
+        
+    .ui-growl-message-warn .ui-growl-item {
+    background-color: #f5de0e;
+    }
+      
+    .ui-growl-message-success .ui-growl-item {
+    background-color: #42A948;
+    }
+}
