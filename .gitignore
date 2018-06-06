@@ -3,7 +3,7 @@
 .springBeans
 .settings
 /target
-
+/bin
 
 
 src/main/webapp/META-INF/

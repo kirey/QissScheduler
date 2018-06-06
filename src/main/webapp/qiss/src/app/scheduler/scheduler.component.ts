@@ -43,6 +43,9 @@ export class SchedulerComponent implements OnInit {
         let d = date.getDate();
         let m:any = date.getMonth()+1;
         let y = date.getFullYear();
+        let h = date.getHours();
+        let min = date.getMinutes();
+        let s = date.getSeconds();
 
         switch(m) {
             case 1:
@@ -83,7 +86,7 @@ export class SchedulerComponent implements OnInit {
             break;
         }
 
-        return m + ' ' + d + ', ' + y;
+        return m + ' ' + d + ', ' + y + ' ' + h + ':' + min + ':' + s;
     }    
 
     // Add Job Modal
@@ -206,6 +209,14 @@ export class SchedulerComponent implements OnInit {
             )
     }
 
+    compare(a,b) {
+        if (a.id < b.id)
+            return -1;
+        if (a.id > b.id)
+            return 1;
+        return 0;
+    }
+
     //History Modal
     openHistoryModal(id) {
         this.historyModal.show();
@@ -213,7 +224,7 @@ export class SchedulerComponent implements OnInit {
             .subscribe(
                 res => {
                     console.log(res);
-                    this.jobHistoryArray = res;
+                    this.jobHistoryArray = res.sort(this.compare);
                 },
                 err => {
                     console.log(err)

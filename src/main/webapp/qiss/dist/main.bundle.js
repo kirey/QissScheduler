@@ -320,6 +320,9 @@ var SchedulerComponent = /** @class */ (function () {
         var d = date.getDate();
         var m = date.getMonth() + 1;
         var y = date.getFullYear();
+        var h = date.getHours();
+        var min = date.getMinutes();
+        var s = date.getSeconds();
         switch (m) {
             case 1:
                 m = 'January';
@@ -358,7 +361,7 @@ var SchedulerComponent = /** @class */ (function () {
                 m = 'December';
                 break;
         }
-        return m + ' ' + d + ', ' + y;
+        return m + ' ' + d + ', ' + y + ' ' + h + ':' + min + ':' + s;
     };
     // Add Job Modal
     SchedulerComponent.prototype.openAddJobModal = function () {
@@ -464,6 +467,13 @@ var SchedulerComponent = /** @class */ (function () {
             _this.errorMessage();
         });
     };
+    SchedulerComponent.prototype.compare = function (a, b) {
+        if (a.id < b.id)
+            return -1;
+        if (a.id > b.id)
+            return 1;
+        return 0;
+    };
     //History Modal
     SchedulerComponent.prototype.openHistoryModal = function (id) {
         var _this = this;
@@ -471,7 +481,7 @@ var SchedulerComponent = /** @class */ (function () {
         this.schedulerService.getHisory(id)
             .subscribe(function (res) {
             console.log(res);
-            _this.jobHistoryArray = res;
+            _this.jobHistoryArray = res.sort(_this.compare);
         }, function (err) {
             console.log(err);
             _this.errorMessage();
