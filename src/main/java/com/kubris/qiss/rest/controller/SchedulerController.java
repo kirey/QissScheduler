@@ -2,6 +2,7 @@ package com.kubris.qiss.rest.controller;
 
 import java.util.List;
 
+import org.quartz.CronExpression;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,9 +65,14 @@ public class SchedulerController {
 	 */
 	@RequestMapping(value = "/addJob", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Schedulers>> addScheduler(@RequestBody Schedulers scheduler) {
-		scheduler.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);
-		schedulersDao.persist(scheduler);
-		return new ResponseEntity<List<Schedulers>>(schedulersDao.findAll(), HttpStatus.OK);
+		
+		if( CronExpression.isValidExpression(scheduler.getCronExpression()) ) { 
+			scheduler.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);
+			schedulersDao.persist(scheduler);
+			return new ResponseEntity<List<Schedulers>>(schedulersDao.findAll(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<List<Schedulers>>(schedulersDao.findAll(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	/**
@@ -77,8 +83,13 @@ public class SchedulerController {
 	 */
 	@RequestMapping(value = "/editJob", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Schedulers>> editScheduler(@RequestBody Schedulers scheduler) {
-		schedulersDao.attachDirty(scheduler);
-		return new ResponseEntity<List<Schedulers>>(schedulersDao.findAll(), HttpStatus.OK);
+		
+		if( CronExpression.isValidExpression(scheduler.getCronExpression()) ) {
+		   schedulersDao.attachDirty(scheduler);
+		   return new ResponseEntity<List<Schedulers>>(schedulersDao.findAll(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<List<Schedulers>>(schedulersDao.findAll(), HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	/**
