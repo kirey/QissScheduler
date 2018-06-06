@@ -41,8 +41,8 @@ public class SchedulerController {
 	 * @return
 	 */
 	@RequestMapping(value = "/jobs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Schedulers>> getAllSchedulers() {
-		return new ResponseEntity<List<Schedulers>>(schedulersDao.findAll(), HttpStatus.OK);
+	public ResponseEntity<ResponseDto> getAllSchedulers() {
+		return new ResponseEntity<ResponseDto>(new ResponseDto(schedulersDao.findAll(), AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 	}
 
 	/**
@@ -52,9 +52,9 @@ public class SchedulerController {
 	 * @return
 	 */
 	@RequestMapping(value = "/job/{jobId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Schedulers> getJobById(@PathVariable int jobId) {
+	public ResponseEntity<ResponseDto> getJobById(@PathVariable int jobId) {
 		Schedulers scheduler = schedulersDao.findById(jobId);
-		return new ResponseEntity<Schedulers>(scheduler, HttpStatus.OK);
+		return new ResponseEntity<ResponseDto>(new ResponseDto(scheduler, AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 	}
 
 	/**
@@ -64,14 +64,14 @@ public class SchedulerController {
 	 * @return
 	 */
 	@RequestMapping(value = "/addJob", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Schedulers>> addScheduler(@RequestBody Schedulers scheduler) {
+	public ResponseEntity<ResponseDto> addScheduler(@RequestBody Schedulers scheduler) {
 		
 		if( CronExpression.isValidExpression(scheduler.getCronExpression()) ) { 
 			scheduler.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);
 			schedulersDao.persist(scheduler);
-			return new ResponseEntity<List<Schedulers>>(schedulersDao.findAll(), HttpStatus.OK);
+			return new ResponseEntity<ResponseDto>(new ResponseDto(schedulersDao.findAll(), AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 		} else {
-			return new ResponseEntity<List<Schedulers>>(schedulersDao.findAll(), HttpStatus.BAD_REQUEST);
+			 return new ResponseEntity<ResponseDto>(new ResponseDto(schedulersDao.findAll(), AppConstants.MSG_CRON_EXPRESSION_INVALID), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -82,13 +82,13 @@ public class SchedulerController {
 	 * @return
 	 */
 	@RequestMapping(value = "/editJob", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Schedulers>> editScheduler(@RequestBody Schedulers scheduler) {
+	public ResponseEntity<ResponseDto> editScheduler(@RequestBody Schedulers scheduler) {
 		
 		if( CronExpression.isValidExpression(scheduler.getCronExpression()) ) {
 		   schedulersDao.attachDirty(scheduler);
-		   return new ResponseEntity<List<Schedulers>>(schedulersDao.findAll(), HttpStatus.OK);
+		   return new ResponseEntity<ResponseDto>(new ResponseDto(schedulersDao.findAll(), AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 		} else {
-			return new ResponseEntity<List<Schedulers>>(schedulersDao.findAll(), HttpStatus.BAD_REQUEST);
+		   return new ResponseEntity<ResponseDto>(new ResponseDto(schedulersDao.findAll(), AppConstants.MSG_CRON_EXPRESSION_INVALID), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -99,9 +99,9 @@ public class SchedulerController {
 	 * @return
 	 */
 	@RequestMapping(value = "/deleteJob/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Schedulers>> deleteScheduler(@PathVariable int id) {
+	public ResponseEntity<ResponseDto> deleteScheduler(@PathVariable int id) {
 		schedulersDao.delete(schedulersDao.findById(id));
-		return new ResponseEntity<List<Schedulers>>(schedulersDao.findAll(), HttpStatus.OK);
+		return new ResponseEntity<ResponseDto>(new ResponseDto(schedulersDao.findAll(), AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 	}
 
 	/**
@@ -111,9 +111,9 @@ public class SchedulerController {
 	 * @return
 	 */
 	@RequestMapping(value = "/jobLog/{idLog}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<SchedulerExecutionLog> getJobLog(@PathVariable int idLog) {
+	public ResponseEntity<ResponseDto> getJobLog(@PathVariable int idLog) {
 		SchedulerExecutionLog sel = schedulerExecutionLogDao.findById(idLog);
-		return new ResponseEntity<SchedulerExecutionLog>(sel, HttpStatus.OK);
+		return new ResponseEntity<ResponseDto>(new ResponseDto(sel, AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 	}
 
 	/**
@@ -123,9 +123,9 @@ public class SchedulerController {
 	 * @return
 	 */
 	@RequestMapping(value = "/jobHistory/{idJob}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<SchedulerExecutionLog>> getHistoryByJobId(@PathVariable int idJob) {
+	public ResponseEntity<ResponseDto> getHistoryByJobId(@PathVariable int idJob) {
 		List<SchedulerExecutionLog> listHistoryByJobId = schedulerExecutionLogDao.getLogsByJobId(idJob);
-		return new ResponseEntity<List<SchedulerExecutionLog>>(listHistoryByJobId, HttpStatus.OK);
+		return new ResponseEntity<ResponseDto>(new ResponseDto(listHistoryByJobId, AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 	}
 
 	/**
@@ -141,10 +141,10 @@ public class SchedulerController {
 
 		try {
 			jobService.startJob(id);
-			return new ResponseEntity<ResponseDto>(new ResponseDto("Job started"), HttpStatus.OK);
+			return new ResponseEntity<ResponseDto>(new ResponseDto(AppConstants.MSG_JOB_SUCCESSFULL_STARTED), HttpStatus.OK);
 		} catch (SchedulerException e) {
-			return new ResponseEntity<ResponseDto>(new ResponseDto("Job starting failed"),
-					HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ResponseDto>(new ResponseDto(AppConstants.MSG_JOB_START_FAILED),
+					HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -159,12 +159,11 @@ public class SchedulerController {
 
 		try {
 			jobService.stopJob(id);
-			return new ResponseEntity<ResponseDto>(new ResponseDto("Job stopped sucesffully"), HttpStatus.OK);
+			return new ResponseEntity<ResponseDto>(new ResponseDto(AppConstants.MSG_JOB_SUCCESSFULL_STOPPED), HttpStatus.OK);
 		} catch (SchedulerException e) {
-			return new ResponseEntity<ResponseDto>(new ResponseDto("Job starting failed: " + e.getMessage()),
-					HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<ResponseDto>(new ResponseDto(AppConstants.MSG_JOB_STOP_FAILED),
+					HttpStatus.BAD_REQUEST);
 		}
-
 	}
 
 }

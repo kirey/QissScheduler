@@ -16,4 +16,15 @@ public class AppConstants {
 	public static final String JOB_STATUS_STARTED = "STARTED";
 	public static final String JOB_STATUS_INTERRUPT = "CANCELED";
 	
+	//MESSAGES
+	public static final String MSG_SUCCESSFULL = "Successfull";
+	public static final String MSG_JOB_SUCCESSFULL_STARTED = "Job successfully started";
+	public static final String MSG_JOB_SUCCESSFULL_DELETED = "Job successfully deleted";
+	public static final String MSG_CRON_EXPRESSION_INVALID = "Cron expression not valid";
+	public static final String MSG_JOB_START_FAILED = "Job starting failed";
+	public static final String MSG_JOB_SUCCESSFULL_STOPPED = "Job stopped sucesffully";
+	public static final String MSG_JOB_STOP_FAILED = "Job stop failed";
+	
+	
+	
 }
