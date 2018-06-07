@@ -107,15 +107,15 @@ export class SchedulerComponent implements OnInit {
         }
         this.schedulerService.addJob(obj)
             .subscribe(
-                res => {
+                res=> {
                     console.log(res);
-                    this.jobs = res;
-                    this.successMessage('Job successfully added.');
+                    this.jobs = res.data;
+                    this.successMessage(res.message);
                     this.addJobModal.hide();
                 },
                 err => {
-                    console.log(err);
-                    this.errorMessage();
+                    this.errorMessage(err);
+                    this.addJobModal.hide();
                 }
             );
     };
@@ -143,13 +143,14 @@ export class SchedulerComponent implements OnInit {
             .subscribe(
                 res => {
                     console.log(res);
-                    this.jobs = res;
-                    this.successMessage('Job successfully edited.');
+                    this.jobs = res.data;
+                    this.successMessage(res.message);
                     this.editJobModal.hide();
                 },
                 err => {
                     console.log(err);
-                    this.errorMessage();
+                    this.errorMessage(err);
+                    this.editJobModal.hide();
                 }
             );
     };
@@ -166,13 +167,14 @@ export class SchedulerComponent implements OnInit {
             .subscribe(
                 res => {
                     console.log(res);
-                    this.jobs = res;
-                    this.successMessage('Job successfully deleted.');
+                    this.jobs = res.data;
+                    this.successMessage(res.message);
                     this.deleteModal.hide();
                 },
                 err => {
                     console.log(err);
-                    this.errorMessage();
+                    this.errorMessage(err);
+                    this.deleteModal.hide();
                 }
             );
     }
@@ -188,7 +190,7 @@ export class SchedulerComponent implements OnInit {
                 },
                 err => {
                     console.log(err);
-                    this.errorMessage();
+                    this.errorMessage(err);
                 }
             )
     }
@@ -204,7 +206,7 @@ export class SchedulerComponent implements OnInit {
                 },
                 err => {
                     console.log(err);
-                    this.errorMessage();
+                    this.errorMessage(err);
                 } 
             )
     }
@@ -224,11 +226,11 @@ export class SchedulerComponent implements OnInit {
             .subscribe(
                 res => {
                     console.log(res);
-                    this.jobHistoryArray = res.sort(this.compare);
+                    this.jobHistoryArray = res.data.sort(this.compare);
                 },
                 err => {
                     console.log(err)
-                    this.errorMessage();
+                    this.errorMessage(err);
                 }
             );
     }
@@ -237,8 +239,8 @@ export class SchedulerComponent implements OnInit {
     successMessage(message) {
         this.messageService.add({severity:'success', summary:'Success', detail: message});
     }
-    errorMessage() {
-        this.messageService.add({severity:'error', summary:'Error', detail: 'Something went wrong.'});
+    errorMessage(err) {
+        this.messageService.add({severity:'error', summary:'Error', detail: err.error.message});
     }
 
     ngOnInit() {
@@ -246,8 +248,8 @@ export class SchedulerComponent implements OnInit {
         this.schedulerService.getJobs()
             .subscribe(
                 res => {
-                    this.jobs = res;
-                    console.log(res);
+                    this.jobs = res.data;
+                    console.log(this.jobs);
                 },
                 err => console.log(err)
             );

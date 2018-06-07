@@ -22,13 +22,13 @@ export class SchedulerService {
         return this._http.post(this.baseUrl + 'stopJob/' + id, null);
     }
 
-    addJob(obj) {
+    addJob(obj):Observable<any> {
         return this._http.post(this.baseUrl + 'addJob', obj);
     }
-    editJob(obj) {
+    editJob(obj):Observable<any> {
         return this._http.put(this.baseUrl + 'editJob', obj);
     }
-    deleteJob(id) {
+    deleteJob(id):Observable<any> {
         return this._http.delete(this.baseUrl + 'deleteJob/' + id);
     }
     getHisory(id): Observable<any> {

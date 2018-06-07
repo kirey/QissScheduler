@@ -382,12 +382,12 @@ var SchedulerComponent = /** @class */ (function () {
         this.schedulerService.addJob(obj)
             .subscribe(function (res) {
             console.log(res);
-            _this.jobs = res;
-            _this.successMessage('Job successfully added.');
+            _this.jobs = res.data;
+            _this.successMessage(res.message);
             _this.addJobModal.hide();
         }, function (err) {
-            console.log(err);
-            _this.errorMessage();
+            _this.errorMessage(err);
+            _this.addJobModal.hide();
         });
     };
     ;
@@ -413,12 +413,13 @@ var SchedulerComponent = /** @class */ (function () {
         this.schedulerService.editJob(obj)
             .subscribe(function (res) {
             console.log(res);
-            _this.jobs = res;
-            _this.successMessage('Job successfully edited.');
+            _this.jobs = res.data;
+            _this.successMessage(res.message);
             _this.editJobModal.hide();
         }, function (err) {
             console.log(err);
-            _this.errorMessage();
+            _this.errorMessage(err);
+            _this.editJobModal.hide();
         });
     };
     ;
@@ -433,12 +434,13 @@ var SchedulerComponent = /** @class */ (function () {
         this.schedulerService.deleteJob(this.currentJob.id)
             .subscribe(function (res) {
             console.log(res);
-            _this.jobs = res;
-            _this.successMessage('Job successfully deleted.');
+            _this.jobs = res.data;
+            _this.successMessage(res.message);
             _this.deleteModal.hide();
         }, function (err) {
             console.log(err);
-            _this.errorMessage();
+            _this.errorMessage(err);
+            _this.deleteModal.hide();
         });
     };
     // Start Job
@@ -451,7 +453,7 @@ var SchedulerComponent = /** @class */ (function () {
             return job.status = 'ACTIVE';
         }, function (err) {
             console.log(err);
-            _this.errorMessage();
+            _this.errorMessage(err);
         });
     };
     // Stop Job
@@ -464,7 +466,7 @@ var SchedulerComponent = /** @class */ (function () {
             return job.status = 'INACTIVE';
         }, function (err) {
             console.log(err);
-            _this.errorMessage();
+            _this.errorMessage(err);
         });
     };
     SchedulerComponent.prototype.compare = function (a, b) {
@@ -481,26 +483,26 @@ var SchedulerComponent = /** @class */ (function () {
         this.schedulerService.getHisory(id)
             .subscribe(function (res) {
             console.log(res);
-            _this.jobHistoryArray = res.sort(_this.compare);
+            _this.jobHistoryArray = res.data.sort(_this.compare);
         }, function (err) {
             console.log(err);
-            _this.errorMessage();
+            _this.errorMessage(err);
         });
     };
     // Growl Messages
     SchedulerComponent.prototype.successMessage = function (message) {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
     };
-    SchedulerComponent.prototype.errorMessage = function () {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong.' });
+    SchedulerComponent.prototype.errorMessage = function (err) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.message });
     };
     SchedulerComponent.prototype.ngOnInit = function () {
         var _this = this;
         // Get All Jobs
         this.schedulerService.getJobs()
             .subscribe(function (res) {
-            _this.jobs = res;
-            console.log(res);
+            _this.jobs = res.data;
+            console.log(_this.jobs);
         }, function (err) { return console.log(err); });
     };
     Object.defineProperty(SchedulerComponent.prototype, "jobName", {
