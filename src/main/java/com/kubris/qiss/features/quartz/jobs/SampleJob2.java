@@ -13,10 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.kubris.qiss.data.dao.SchedulerExecutionLogDao;
-import com.kubris.qiss.data.dao.SchedulersDao;
-import com.kubris.qiss.data.entity.SchedulerExecutionLog;
-import com.kubris.qiss.data.entity.Schedulers;
+import com.kubris.qiss.data.dao.JobExecutionLogDao;
+import com.kubris.qiss.data.dao.JobsDao;
+import com.kubris.qiss.data.entity.JobExecutionLog;
+import com.kubris.qiss.data.entity.Jobs;
 import com.kubris.qiss.utils.AppConstants;
 
 @Component
@@ -26,14 +26,14 @@ public class SampleJob2 implements InterruptableJob {
 	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
-	private SchedulerExecutionLogDao schedulerExecutionLogDao;
+	private JobExecutionLogDao jobExecutionLogDao;
 
 	@Autowired
-	private SchedulersDao schedulersDao;
+	private JobsDao schedulersDao;
 
 	private boolean loopControl = false;
 
-	private SchedulerExecutionLog jobLogLatest = null;
+	private JobExecutionLog jobLogLatest = null;
 
 	private JobExecutionContext jobExecutionContext = null;
 
@@ -43,16 +43,16 @@ public class SampleJob2 implements InterruptableJob {
 
 			String jobName = context.getJobDetail().getKey().getName();
 
-			Schedulers scheduler = schedulersDao.findByJobName(jobName);
+			Jobs job = schedulersDao.findByJobName(jobName);
 
-			SchedulerExecutionLog jobLog = new SchedulerExecutionLog();
+			JobExecutionLog jobLog = new JobExecutionLog();
 			jobLog.setStartTimestamp(new Date());
 			jobLog.setStatus(AppConstants.JOB_STATUS_STARTED);
 			jobLog.setJobName(context.getJobDetail().getKey().getName());
-			jobLog.setScheduler(scheduler);
-			schedulerExecutionLogDao.persist(jobLog);
+			jobLog.setJob(job);
+			jobExecutionLogDao.persist(jobLog);
 
-			jobLogLatest = schedulerExecutionLogDao.getLatestLogByJob(context.getJobDetail().getKey().getName());
+			jobLogLatest = jobExecutionLogDao.getLatestLogByJob(context.getJobDetail().getKey().getName());
 			
 			logger.info("execute()::***EXECUTING SAMPLE JOB 2:" + context.getJobDetail().getKey().getName() + "WITH LOG ID: "
 					+ jobLogLatest.getId());

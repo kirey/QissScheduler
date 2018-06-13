@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import com.kubris.qiss.data.dao.SchedulersDao;
-import com.kubris.qiss.data.entity.Schedulers;
+import com.kubris.qiss.data.dao.JobsDao;
+import com.kubris.qiss.data.entity.Jobs;
 import com.kubris.qiss.features.quartz.jobs.SchedJobListener;
 import com.kubris.qiss.utils.AppConstants;
 
@@ -35,7 +35,7 @@ public class JobService {
 	private SchedJobListener schedJobListener;
 
 	@Autowired
-	private SchedulersDao schedulersDao;
+	private JobsDao jobsDao;
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -61,7 +61,7 @@ public class JobService {
 
 	public void startJob(Integer id) throws SchedulerException, ClassNotFoundException {
 
-		Schedulers schedulerEnt = schedulersDao.findById(id);
+		Jobs schedulerEnt = jobsDao.findById(id);
 
 		CronTrigger cronTrigger = createTrigger(schedulerEnt.getCronExpression(), schedulerEnt.getJobName(),
 				AppConstants.GROUP_NAME);
@@ -74,19 +74,19 @@ public class JobService {
 		scheduler1.start();
 
 		schedulerEnt.setStatus(AppConstants.SCHEDULER_STATUS_ACTIVE);
-		schedulersDao.merge(schedulerEnt);
+		jobsDao.merge(schedulerEnt);
 
 	}
 
 	public void stopJob(Integer id) throws SchedulerException {
 
-		Schedulers schedulerEnt = schedulersDao.findById(id);
+		Jobs schedulerEnt = jobsDao.findById(id);
 
 		scheduler1.interrupt(JobKey.jobKey(schedulerEnt.getJobName(), AppConstants.GROUP_NAME));
 		scheduler1.deleteJob(JobKey.jobKey(schedulerEnt.getJobName(), AppConstants.GROUP_NAME));
 
 		schedulerEnt.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);
-		schedulersDao.attachDirty(schedulerEnt);
+		jobsDao.attachDirty(schedulerEnt);
 
 	}
 

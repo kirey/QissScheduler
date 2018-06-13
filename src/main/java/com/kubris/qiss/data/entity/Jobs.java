@@ -24,8 +24,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "schedulers")
-public class Schedulers implements Serializable {
+@Table(name = "jobs")
+public class Jobs implements Serializable {
 
 	
 	private static final long serialVersionUID = 1703338942103035773L;
@@ -39,11 +39,11 @@ public class Schedulers implements Serializable {
 	private String status;
 
 	@JsonBackReference
-	List<SchedulerExecutionLog> schedulerExecutionLogs = new ArrayList<>();
+	List<JobExecutionLog> jobExecutionLogs = new ArrayList<>();
 
 	@Id
-	@SequenceGenerator(name = "seq_schedulers_gen", sequenceName = "seq_schedulers", allocationSize = 1, initialValue = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_schedulers_gen")
+	@SequenceGenerator(name = "seq_jobs_gen", sequenceName = "seq_jobs", allocationSize = 1, initialValue = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_jobs_gen")
 	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
 	public int getId() {
 		return id;
@@ -71,15 +71,15 @@ public class Schedulers implements Serializable {
 		this.cronExpression = cronExpression;
 	}
 
-	@OneToMany(mappedBy = "scheduler",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "job",cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@Fetch(FetchMode.SUBSELECT)
-	public List<SchedulerExecutionLog> getSchedulerExecutionLogs() {
-		return schedulerExecutionLogs;
+	public List<JobExecutionLog> getJobExecutionLogs() {
+		return jobExecutionLogs;
 	}
 
-	public void setSchedulerExecutionLogs(List<SchedulerExecutionLog> schedulerExecutionLogs) {
-		this.schedulerExecutionLogs = schedulerExecutionLogs;
+	public void setJobExecutionLogs(List<JobExecutionLog> jobExecutionLogs) {
+		this.jobExecutionLogs = jobExecutionLogs;
 	}
 
 	@Column(name = "status")

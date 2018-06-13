@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kubris.qiss.data.dao.SchedulerExecutionLogDao;
-import com.kubris.qiss.data.dao.SchedulersDao;
+import com.kubris.qiss.data.dao.JobExecutionLogDao;
+import com.kubris.qiss.data.dao.JobsDao;
 import com.kubris.qiss.data.dto.ResponseDto;
-import com.kubris.qiss.data.entity.SchedulerExecutionLog;
-import com.kubris.qiss.data.entity.Schedulers;
+import com.kubris.qiss.data.entity.JobExecutionLog;
+import com.kubris.qiss.data.entity.Jobs;
 import com.kubris.qiss.rest.service.JobService;
 import com.kubris.qiss.utils.AppConstants;
 
@@ -27,10 +27,10 @@ import com.kubris.qiss.utils.AppConstants;
 public class SchedulerController {
 
 	@Autowired
-	private SchedulersDao schedulersDao;
+	private JobsDao jobsDao;
 
 	@Autowired
-	private SchedulerExecutionLogDao schedulerExecutionLogDao;
+	private JobExecutionLogDao jobExecutionLogDao;
 
 	@Autowired
 	JobService jobService;
@@ -42,7 +42,7 @@ public class SchedulerController {
 	 */
 	@RequestMapping(value = "/jobs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDto> getAllSchedulers() {
-		return new ResponseEntity<ResponseDto>(new ResponseDto(schedulersDao.findAll(), AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
+		return new ResponseEntity<ResponseDto>(new ResponseDto(jobsDao.findAll(), AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class SchedulerController {
 	 */
 	@RequestMapping(value = "/job/{jobId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDto> getJobById(@PathVariable int jobId) {
-		Schedulers scheduler = schedulersDao.findById(jobId);
+		Jobs scheduler = jobsDao.findById(jobId);
 		return new ResponseEntity<ResponseDto>(new ResponseDto(scheduler, AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 	}
 
@@ -64,14 +64,14 @@ public class SchedulerController {
 	 * @return
 	 */
 	@RequestMapping(value = "/addJob", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDto> addScheduler(@RequestBody Schedulers scheduler) {
+	public ResponseEntity<ResponseDto> addScheduler(@RequestBody Jobs scheduler) {
 		
 		if( CronExpression.isValidExpression(scheduler.getCronExpression()) ) { 
 			scheduler.setStatus(AppConstants.SCHEDULER_STATUS_INACTIVE);
-			schedulersDao.persist(scheduler);
-			return new ResponseEntity<ResponseDto>(new ResponseDto(schedulersDao.findAll(), AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
+			jobsDao.persist(scheduler);
+			return new ResponseEntity<ResponseDto>(new ResponseDto(jobsDao.findAll(), AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 		} else {
-			 return new ResponseEntity<ResponseDto>(new ResponseDto(schedulersDao.findAll(), AppConstants.MSG_CRON_EXPRESSION_INVALID), HttpStatus.BAD_REQUEST);
+			 return new ResponseEntity<ResponseDto>(new ResponseDto(jobsDao.findAll(), AppConstants.MSG_CRON_EXPRESSION_INVALID), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -82,13 +82,13 @@ public class SchedulerController {
 	 * @return
 	 */
 	@RequestMapping(value = "/editJob", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseDto> editScheduler(@RequestBody Schedulers scheduler) {
+	public ResponseEntity<ResponseDto> editScheduler(@RequestBody Jobs scheduler) {
 		
 		if( CronExpression.isValidExpression(scheduler.getCronExpression()) ) {
-		   schedulersDao.attachDirty(scheduler);
-		   return new ResponseEntity<ResponseDto>(new ResponseDto(schedulersDao.findAll(), AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
+			jobsDao.attachDirty(scheduler);
+		   return new ResponseEntity<ResponseDto>(new ResponseDto(jobsDao.findAll(), AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 		} else {
-		   return new ResponseEntity<ResponseDto>(new ResponseDto(schedulersDao.findAll(), AppConstants.MSG_CRON_EXPRESSION_INVALID), HttpStatus.BAD_REQUEST);
+		   return new ResponseEntity<ResponseDto>(new ResponseDto(jobsDao.findAll(), AppConstants.MSG_CRON_EXPRESSION_INVALID), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -100,8 +100,8 @@ public class SchedulerController {
 	 */
 	@RequestMapping(value = "/deleteJob/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDto> deleteScheduler(@PathVariable int id) {
-		schedulersDao.delete(schedulersDao.findById(id));
-		return new ResponseEntity<ResponseDto>(new ResponseDto(schedulersDao.findAll(), AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
+		jobsDao.delete(jobsDao.findById(id));
+		return new ResponseEntity<ResponseDto>(new ResponseDto(jobsDao.findAll(), AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class SchedulerController {
 	 */
 	@RequestMapping(value = "/jobLog/{idLog}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDto> getJobLog(@PathVariable int idLog) {
-		SchedulerExecutionLog sel = schedulerExecutionLogDao.findById(idLog);
+		JobExecutionLog sel = jobExecutionLogDao.findById(idLog);
 		return new ResponseEntity<ResponseDto>(new ResponseDto(sel, AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 	}
 
@@ -124,7 +124,7 @@ public class SchedulerController {
 	 */
 	@RequestMapping(value = "/jobHistory/{idJob}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseDto> getHistoryByJobId(@PathVariable int idJob) {
-		List<SchedulerExecutionLog> listHistoryByJobId = schedulerExecutionLogDao.getLogsByJobId(idJob);
+		List<JobExecutionLog> listHistoryByJobId = jobExecutionLogDao.getLogsByJobId(idJob);
 		return new ResponseEntity<ResponseDto>(new ResponseDto(listHistoryByJobId, AppConstants.MSG_SUCCESSFULL), HttpStatus.OK);
 	}
 

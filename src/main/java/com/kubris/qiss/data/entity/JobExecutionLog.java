@@ -17,8 +17,8 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "scheduler_execution_log")
-public class SchedulerExecutionLog implements Serializable {
+@Table(name = "job_execution_log")
+public class JobExecutionLog implements Serializable {
 
 	
 	private static final long serialVersionUID = -7923575265748819365L;
@@ -34,11 +34,11 @@ public class SchedulerExecutionLog implements Serializable {
 	private String status;
 
 	
-	private Schedulers scheduler;
+	private Jobs job;
 
 	@Id
-	@SequenceGenerator(name = "seq_scheduler_execution_log_gen", sequenceName = "seq_scheduler_execution_log", allocationSize = 1, initialValue = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_scheduler_execution_log_gen")
+	@SequenceGenerator(name = "seq_job_execution_log_gen", sequenceName = "seq_job_execution_log", allocationSize = 1, initialValue = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_job_execution_log_gen")
 	@Column(name = "ID", unique = true, nullable = false, precision = 10, scale = 0)
 	public int getId() {
 		return id;
@@ -85,13 +85,13 @@ public class SchedulerExecutionLog implements Serializable {
 	}
 
 	@ManyToOne()
-	@JoinColumn(name = "scheduler")
-	public Schedulers getScheduler() {
-		return scheduler;
+	@JoinColumn(name = "job_id")
+	public Jobs getJob() {
+		return job;
 	}
 
-	public void setScheduler(Schedulers scheduler) {
-		this.scheduler = scheduler;
+	public void setJob(Jobs job) {
+		this.job = job;
 	}
 
 }

@@ -10,20 +10,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kubris.qiss.data.dao.SchedulerExecutionLogDao;
-import com.kubris.qiss.data.dao.SchedulersDao;
-import com.kubris.qiss.data.entity.SchedulerExecutionLog;
-import com.kubris.qiss.data.entity.Schedulers;
+import com.kubris.qiss.data.dao.JobExecutionLogDao;
+import com.kubris.qiss.data.dao.JobsDao;
+import com.kubris.qiss.data.entity.JobExecutionLog;
+import com.kubris.qiss.data.entity.Jobs;
 import com.kubris.qiss.utils.AppConstants;
 
 @Service
 public class SchedJobListener implements JobListener {
 
 	@Autowired
-	SchedulerExecutionLogDao schedulerExecutionLogDao;
+	JobExecutionLogDao jobExecutionLogDao;
 
 	@Autowired
-	SchedulersDao schedulersDao;
+	JobsDao jobsDao;
 
 	public static final String LISTENER_NAME = "globalJobListener";
 
@@ -46,7 +46,7 @@ public class SchedJobListener implements JobListener {
 
 	@Override
 	public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
-		SchedulerExecutionLog jobLog = schedulerExecutionLogDao
+		JobExecutionLog jobLog = jobExecutionLogDao
 				.getLatestLogByJob(context.getJobDetail().getKey().getName());
 		logger.info("jobWasExecuted::FINISHING Log ID : " + jobLog.getId());
 
@@ -54,7 +54,7 @@ public class SchedJobListener implements JobListener {
 
 		jobLog.setEndTimestamp(new Date());
 
-		schedulerExecutionLogDao.merge(jobLog);
+		jobExecutionLogDao.merge(jobLog);
 
 	}
 
