@@ -248,7 +248,7 @@ export class SchedulerComponent implements OnInit {
         this.schedulerService.getJobs()
             .subscribe(
                 res => {
-                    this.jobs = res.data;
+                    this.jobs = res.data.sort(this.compare);
                     console.log(this.jobs);
                 },
                 err => console.log(err)

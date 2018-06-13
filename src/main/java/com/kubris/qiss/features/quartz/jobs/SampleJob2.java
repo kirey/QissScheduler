@@ -58,11 +58,11 @@ public class SampleJob2 implements InterruptableJob {
 					+ jobLogLatest.getId());
 
 			loopControl = true;
-//			for (int i = 0; i < 10 && loopControl; i++) {
-//				Thread.currentThread().sleep(1000);
-//				logger.info("execute::EXECUTING:" + context.getJobDetail().getKey().getName() + "WITH LOG ID: "
-//						+ jobLogLatest.getId());
-//			}
+			for (int i = 0; i < 10 && loopControl; i++) {
+				Thread.currentThread().sleep(1000);
+				logger.info("execute::EXECUTING:" + context.getJobDetail().getKey().getName() + "WITH LOG ID: "
+					+ jobLogLatest.getId());
+			}
 
 			if (loopControl) {
 				context.getJobDetail().getJobDataMap().put("status", AppConstants.JOB_STATUS_FINISHED_SUCCESSFULL);

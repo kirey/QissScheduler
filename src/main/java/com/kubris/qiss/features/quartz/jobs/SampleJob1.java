@@ -30,7 +30,7 @@ public class SampleJob1 implements InterruptableJob {
 	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
-	private JobExecutionLogDao schedulerExecutionLogDao;
+	private JobExecutionLogDao jobExecutionLogDao;
 
 	@Autowired
 	private JobsDao jobsDao;
@@ -47,16 +47,16 @@ public class SampleJob1 implements InterruptableJob {
 
 			String jobName = context.getJobDetail().getKey().getName();
 
-			Jobs job = jobsDao.findByJobName(jobName);
+			Jobs job = jobsDao.findById(context.getJobDetail().getJobDataMap().getInt("jobId"));
 
 			JobExecutionLog jobLog = new JobExecutionLog();
 			jobLog.setStartTimestamp(new Date());
 			jobLog.setStatus(AppConstants.JOB_STATUS_STARTED);
 			jobLog.setJobName(context.getJobDetail().getKey().getName());
 			jobLog.setJob(job);
-			schedulerExecutionLogDao.persist(jobLog);
+			jobExecutionLogDao.persist(jobLog);
 
-			jobLogLatest = schedulerExecutionLogDao.getLatestLogByJob(context.getJobDetail().getKey().getName());
+			jobLogLatest = jobExecutionLogDao.getLatestLogByJob(context.getJobDetail().getKey().getName());
 			
 			logger.info("execute()::***EXECUTING SAMPLE JOB 1:" + context.getJobDetail().getKey().getName() + "WITH LOG ID: "
 					+ jobLogLatest.getId());
