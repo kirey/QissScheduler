@@ -483,7 +483,7 @@ var SchedulerComponent = /** @class */ (function () {
         this.schedulerService.getHisory(id)
             .subscribe(function (res) {
             console.log(res);
-            _this.jobHistoryArray = res.data.sort(_this.compare);
+            _this.jobHistoryArray = res.data.sort(_this.compare).reverse();
         }, function (err) {
             console.log(err);
             _this.errorMessage(err);

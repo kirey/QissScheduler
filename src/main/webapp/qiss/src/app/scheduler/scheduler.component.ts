@@ -21,9 +21,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class SchedulerComponent implements OnInit {
 
     constructor(
-        public schedulerService: SchedulerService, 
-        private _modalService: BsModalService, 
-        public formBuilder: FormBuilder,  
+        public schedulerService: SchedulerService,
+        private _modalService: BsModalService,
+        public formBuilder: FormBuilder,
         private messageService: MessageService) { }
 
     jobs: any;
@@ -41,53 +41,53 @@ export class SchedulerComponent implements OnInit {
     formatDate(ts) {
         let date = new Date(ts);
         let d = date.getDate();
-        let m:any = date.getMonth()+1;
+        let m: any = date.getMonth() + 1;
         let y = date.getFullYear();
         let h = date.getHours();
         let min = date.getMinutes();
         let s = date.getSeconds();
 
-        switch(m) {
+        switch (m) {
             case 1:
-            m = 'January';
-            break;
+                m = 'January';
+                break;
             case 2:
-            m = 'February';
-            break;
+                m = 'February';
+                break;
             case 3:
-            m = 'March';
-            break;
+                m = 'March';
+                break;
             case 4:
-            m = 'April';
-            break;
+                m = 'April';
+                break;
             case 5:
-            m = 'May';
-            break;
+                m = 'May';
+                break;
             case 6:
-            m = 'June';
-            break;
+                m = 'June';
+                break;
             case 7:
-            m = 'July';
-            break;
+                m = 'July';
+                break;
             case 8:
-            m = 'August';
-            break;
+                m = 'August';
+                break;
             case 9:
-            m = 'September';
-            break;
+                m = 'September';
+                break;
             case 10:
-            m = 'October';
-            break;
+                m = 'October';
+                break;
             case 11:
-            m = 'November';
-            break;
+                m = 'November';
+                break;
             case 12:
-            m = 'December';
-            break;
+                m = 'December';
+                break;
         }
 
         return m + ' ' + d + ', ' + y + ' ' + h + ':' + min + ':' + s;
-    }    
+    }
 
     // Add Job Modal
     openAddJobModal() {
@@ -107,16 +107,16 @@ export class SchedulerComponent implements OnInit {
         }
         this.schedulerService.addJob(obj)
             .subscribe(
-                res=> {
-                    console.log(res);
-                    this.jobs = res.data;
-                    this.successMessage(res.message);
-                    this.addJobModal.hide();
-                },
-                err => {
-                    this.errorMessage(err);
-                    this.addJobModal.hide();
-                }
+            res => {
+                console.log(res);
+                this.jobs = res.data;
+                this.successMessage(res.message);
+                this.addJobModal.hide();
+            },
+            err => {
+                this.errorMessage(err);
+                this.addJobModal.hide();
+            }
             );
     };
 
@@ -141,17 +141,17 @@ export class SchedulerComponent implements OnInit {
         }
         this.schedulerService.editJob(obj)
             .subscribe(
-                res => {
-                    console.log(res);
-                    this.jobs = res.data;
-                    this.successMessage(res.message);
-                    this.editJobModal.hide();
-                },
-                err => {
-                    console.log(err);
-                    this.errorMessage(err);
-                    this.editJobModal.hide();
-                }
+            res => {
+                console.log(res);
+                this.jobs = res.data;
+                this.successMessage(res.message);
+                this.editJobModal.hide();
+            },
+            err => {
+                console.log(err);
+                this.errorMessage(err);
+                this.editJobModal.hide();
+            }
             );
     };
 
@@ -165,17 +165,17 @@ export class SchedulerComponent implements OnInit {
     deleteJob() {
         this.schedulerService.deleteJob(this.currentJob.id)
             .subscribe(
-                res => {
-                    console.log(res);
-                    this.jobs = res.data;
-                    this.successMessage(res.message);
-                    this.deleteModal.hide();
-                },
-                err => {
-                    console.log(err);
-                    this.errorMessage(err);
-                    this.deleteModal.hide();
-                }
+            res => {
+                console.log(res);
+                this.jobs = res.data;
+                this.successMessage(res.message);
+                this.deleteModal.hide();
+            },
+            err => {
+                console.log(err);
+                this.errorMessage(err);
+                this.deleteModal.hide();
+            }
             );
     }
 
@@ -183,15 +183,15 @@ export class SchedulerComponent implements OnInit {
     start(job) {
         this.schedulerService.startJob(job.id)
             .subscribe(
-                res => {
-                    console.log(res);
-                    this.successMessage(res.message);
-                    return job.status = 'ACTIVE';
-                },
-                err => {
-                    console.log(err);
-                    this.errorMessage(err);
-                }
+            res => {
+                console.log(res);
+                this.successMessage(res.message);
+                return job.status = 'ACTIVE';
+            },
+            err => {
+                console.log(err);
+                this.errorMessage(err);
+            }
             )
     }
 
@@ -199,19 +199,19 @@ export class SchedulerComponent implements OnInit {
     stop(job) {
         this.schedulerService.stopJob(job.id)
             .subscribe(
-                res => {
-                    console.log(res);
-                    this.successMessage(res.message);
-                    return job.status = 'INACTIVE';
-                },
-                err => {
-                    console.log(err);
-                    this.errorMessage(err);
-                } 
+            res => {
+                console.log(res);
+                this.successMessage(res.message);
+                return job.status = 'INACTIVE';
+            },
+            err => {
+                console.log(err);
+                this.errorMessage(err);
+            }
             )
     }
 
-    compare(a,b) {
+    compare(a, b) {
         if (a.id < b.id)
             return -1;
         if (a.id > b.id)
@@ -224,34 +224,34 @@ export class SchedulerComponent implements OnInit {
         this.historyModal.show();
         this.schedulerService.getHisory(id)
             .subscribe(
-                res => {
-                    console.log(res);
-                    this.jobHistoryArray = res.data.sort(this.compare);
-                },
-                err => {
-                    console.log(err)
-                    this.errorMessage(err);
-                }
+            res => {
+                console.log(res);
+                this.jobHistoryArray = res.data.sort(this.compare).reverse();
+            },
+            err => {
+                console.log(err)
+                this.errorMessage(err);
+            }
             );
     }
 
     // Growl Messages
     successMessage(message) {
-        this.messageService.add({severity:'success', summary:'Success', detail: message});
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
     }
     errorMessage(err) {
-        this.messageService.add({severity:'error', summary:'Error', detail: err.error.message});
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.message });
     }
 
     ngOnInit() {
         // Get All Jobs
         this.schedulerService.getJobs()
             .subscribe(
-                res => {
-                    this.jobs = res.data.sort(this.compare);
-                    console.log(this.jobs);
-                },
-                err => console.log(err)
+            res => {
+                this.jobs = res.data.sort(this.compare);
+                console.log(this.jobs);
+            },
+            err => console.log(err)
             );
     }
     //Getters for Form Contorls
